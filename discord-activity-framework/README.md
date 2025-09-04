@@ -22,6 +22,15 @@ A comprehensive, production-ready framework for building Discord Activities with
 
 ## 🛠️ Quick Start
 
+### Step 0: Enable Developer Mode
+
+Developer Mode will allow you to run in-development Activities and expose resource IDs (users, channels, servers) to simplify testing.
+
+**To enable Developer Mode:**
+
+1. Go to **User Settings** in your Discord client. On desktop, click the cogwheel icon near the bottom-left next to your username.
+2. Click **Advanced** in the left sidebar and toggle **Developer Mode** on.
+
 ### 1. Clone and Setup
 
 ```bash
@@ -47,6 +56,7 @@ Follow the detailed setup guide below to configure your Discord application.
 npm run dev
 
 # In another terminal, create a tunnel for testing
+# Note: You need to install cloudflared first: https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/installation/
 npm run tunnel
 ```
 
@@ -80,11 +90,16 @@ This comprehensive guide walks you through every setting in the Discord Develope
 
 1. **Navigate to Installation Settings**
    - In the left sidebar, click **"Installation"**
-   - Under **"Installation Contexts"**, ensure both are selected:
-     - ✅ **User Install** - Allows users to install your app to their account
-     - ✅ **Guild Install** - Allows servers to install your app
+   - Under **"Installation Contexts"**, configure your app's installation options:
+     - ✅ **User Install** (checkbox) - Allows users to install your app to their account
+     - ⚪ **Guild Install** (radio button) - Allows servers to install your app
 
-2. **Why Both Contexts?**
+2. **Install Link**
+   - Discord provides an automatic install link (e.g., `https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID`)
+   - You can copy this link to share your app with users
+   - Users who click this link will be taken through the Discord app installation flow
+
+3. **Why Both Contexts?**
    - **User Install**: Your Activity can be launched in DMs and Group DMs
    - **Guild Install**: Your Activity can be launched in server channels
    - Having both gives maximum flexibility
@@ -98,13 +113,20 @@ This comprehensive guide walks you through every setting in the Discord Develope
 2. **Add Redirect URIs**
    - In the **"Redirects"** section, add:
      - `https://127.0.0.1` (for local development)
-     - Your production domain (e.g., `https://yourapp.com/auth/callback`)
+     - Your production domain (e.g., `https://yourapp.com`)
    - Click **"Save Changes"**
+   
+   > **Note:** The Embedded App SDK automatically redirects users back to your Activity when the RPC `authorize` command is called, so we use a placeholder value.
 
 3. **Copy OAuth2 Credentials**
    - Copy your **Client ID** (same as Application ID)
    - Copy your **Client Secret** (keep this secure!)
    - Add these to your `.env` file
+   
+   **Required Scopes for this framework:**
+   - `identify` — basic user info
+   - `guilds` — basic info about a user's servers
+   - `applications.commands` — install commands
 
 ### Step 4: Enable Activities
 
@@ -113,29 +135,32 @@ This comprehensive guide walks you through every setting in the Discord Develope
    - Click **"Settings"**
 
 2. **Enable Activities**
-   - Check the **"Enable Activities"** checkbox
+   - Toggle the **"Enable Activities"** switch to ON
    - This creates a default "Launch" command for your Activity
 
 3. **Configure Activity Settings**
-   - **Activity Type**: Select "Activity" (not "Rich Presence")
-   - **Supported Platforms**: Select "Desktop" and "Mobile"
-   - **Supported Locales**: Add "en-US" (and others as needed)
+   - **Age Gate**: Toggle OFF (unless your content is 18+)
+   - **Maximum Participants**: Set to your desired limit (e.g., 5)
+   - **Phone Default Orientation Lock State**: Select "Unlocked" (or "Locked" if needed)
+   - **Tablet Default Orientation Lock State**: Select "Unlocked" (or "Locked" if needed)
+   - **Supported Platforms**: Check "Web", "iOS", and "Android" as needed
 
 ### Step 5: URL Mappings (Development)
 
 1. **Navigate to URL Mappings**
    - Click **"Activities"** → **"URL Mappings"**
 
-2. **Add Development URL**
-   - **Prefix**: `/` (root path)
-   - **Target**: Your tunnel URL (e.g., `https://funky-jogging-bunny.trycloudflare.com`)
-   - Click **"Add Mapping"**
+2. **Configure Root Mapping**
+   - **PREFIX**: `/` (root path)
+   - **TARGET**: Your tunnel URL (e.g., `https://funky-jogging-bunny.trycloudflare.com`)
+   - This points to the main entry point of your iframe application
+   
+   > **Note:** Because Activities are sandboxed and go through the Discord proxy, you need to configure the Root Mapping in your app's settings.
 
-3. **URL Mapping Rules**
-   - **Prefix**: The path prefix in your Activity URL
-   - **Target**: Where requests to that prefix should be routed
-   - For development, map `/` to your tunnel URL
-   - For production, map `/` to your production domain
+3. **Optional: Proxy Path Mappings**
+   - You can add additional mappings for specific paths (e.g., `/cdn` for assets)
+   - Use the **"Add Another URL Mapping"** button if needed
+   - For development, you typically only need the Root Mapping
 
 ### Step 6: Art Assets (Optional)
 
@@ -171,12 +196,15 @@ This comprehensive guide walks you through every setting in the Discord Develope
    DISCORD_CLIENT_ID=your_application_id_here
    DISCORD_CLIENT_SECRET=your_client_secret_here
    
-   # Client-side environment variable
+   # Client-side environment variable (prefixed with VITE_)
+   # This will be available in the browser
    VITE_CLIENT_ID=your_application_id_here
    
    # Server Configuration
    PORT=3001
    ```
+   
+   > **Why the `VITE_` prefix?** Vite exposes `import.meta.env.VITE_*` variables to the client bundle.
 
 2. **Security Notes**
    - Never commit your `.env` file to version control
@@ -228,6 +256,8 @@ The framework provides a complete foundation for Discord Activities. Here's how 
 
 The framework includes built-in rich presence management:
 
+> **Note:** In your code, use `import.meta.env.VITE_CLIENT_ID` to access the client ID in the browser.
+
 ```javascript
 // Update activity state
 await discordSdk.commands.setActivity({
@@ -275,6 +305,11 @@ discordSdk.subscribe('SPEAKING_START', (data) => {
 
 2. **Create Tunnel**
    ```bash
+   # First, install cloudflared if you haven't already:
+   # macOS: brew install cloudflared
+   # Windows: Download from https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/installation/
+   # Linux: See installation guide at the same URL
+   
    npm run tunnel
    ```
 
