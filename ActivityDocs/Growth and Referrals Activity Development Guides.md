@@ -1,339 +1,251 @@
-**On this page** Prompting Users to Share Incentivized Links Creating and Managing Custom Incentivized Links Generating a Custom Link Within Your Activity **QUICK START INTERACTIONS COMPONENTS ACTIVITIES** 
+# Growth & Referrals
+
+This guide covers strategies and APIs to help your Activity grow through shareable, trackable links. It includes how to prompt users to share, how to handle referrals, and how to create & manage custom incentivized links (both via the Developer Portal and programmatically from your Activity).
+
+---
+
+## On This Page
+- [Prompting Users to Share Incentivized Links](#prompting-users-to-share-incentivized-links)
+- [Implementation Overview](#implementation-overview)
+- [Sharing Links](#sharing-links)
+- [Handling Incoming Referrals](#handling-incoming-referrals)
+- [Link Sharing Best Practices](#link-sharing-best-practices)
+- [Creating and Managing Custom Incentivized Links](#creating-and-managing-custom-incentivized-links)
+  - [Creating a Link](#creating-a-link)
+  - [Editing a Link](#editing-a-link)
+  - [Copying a Link](#copying-a-link)
+  - [Deleting a Link](#deleting-a-link)
+  - [Best Practices](#best-practices)
+  - [User Experience](#user-experience)
+- [Generating a Custom Link Within Your Activity](#generating-a-custom-link-within-your-activity)
+  - [Generating a Link](#generating-a-link)
+
+---
+
+## Prompting Users to Share Incentivized Links
+
+Incentivized sharing can help grow your Activity via network effects. Useful patterns include:
+
+- **Referral links** — Users copy links from your Activity that include their Discord user ID, e.g.  
+  `https://discord.com/activities/<YOUR_ACTIVITY_ID>?referrer_id=123456789`  
+  If a friend clicks and starts playing, reward the referrer.
+- **Promotions** — Run time-limited promos with a **custom_id**, e.g.  
+  `https://discord.com/activities/<YOUR_ACTIVITY_ID>?custom_id=social012025`
+- **Social deep-links** — Link directly to relevant in-app locations, e.g.  
+  `https://discord.com/activities/<YOUR_ACTIVITY_ID>?referrer_id=123456789&custom_id=visitlocation`
+- **Turn-based deep-links** — DM users a link that opens the exact game instance and turn.
+- **Affiliate marketing** — Attribute traffic to partners via **custom_id**, e.g.  
+  `https://discord.com/activities/<YOUR_ACTIVITY_ID>?custom_id=influencer1`
+- **Source attribution** — Use **custom_id** values to segment traffic across campaigns.
+
+This guide demonstrates a referral flow that rewards the sharer and the new user.
+
+---
+
+## Implementation Overview
+
+1. Generate a unique identifier for the share (campaign/user/share-level granularity).
+2. Use the **Embedded App SDK** `shareLink` command to let the user share.
+3. Track the share attempt and whether it succeeded.
+4. On launch, read referral data exposed by the SDK and validate on your server.
+5. Grant rewards when a valid referral is detected (avoid abuse, prevent self-referrals).
+
+---
+
+## Sharing Links
+
+```ts
+import { DiscordSDK } from '@discord/embedded-app-sdk';
+
+const discordSdk = new DiscordSDK(import.meta.env.VITE_DISCORD_CLIENT_ID);
+await discordSdk.ready();
+
+// Generate a unique ID for this promotion.
+// This could be per-campaign, per-user, or per-share depending on your needs.
+const customId = await createPromotionalCustomId();
+
+try {
+  const { success } = await discordSdk.commands.shareLink({
+    message: 'Click this link to redeem 5 free coins!',
+    custom_id: customId,
+  });
+
+  if (success) {
+    // Track successful share for analytics / limiting
+    await trackSuccessfulShare(customId);
+  }
+} catch (error) {
+  // Handle share failures appropriately
+  console.error('Failed to share link:', error);
+}
+```
+
+---
+
+## Handling Incoming Referrals
+
+When a user clicks a shared link, your Activity launches with referral metadata available through the SDK.
 
-#### API Reference 
+```ts
+// Early in your activity's initialization
+async function handleReferral(currentUserId: string) {
+  // Validate the referral data
+  const { customId, referrerId } = {
+    customId: (discordSdk as any).customId,
+    referrerId: (discordSdk as any).referrerId,
+  };
 
-#### Overview of Apps 
+  if (!customId || !referrerId) return;
 
-#### Getting Started 
+  try {
+    // Verify this is a valid promotion and hasn't expired
+    const promotion = await validatePromotion(customId);
+    if (!promotion) {
+      console.log('Invalid or expired promotion');
+      return;
+    }
 
-#### Overview 
+    // Prevent self-referrals
+    if (referrerId === currentUserId) {
+      console.log('Self-referrals not allowed');
+      return;
+    }
 
-#### Receiving and 
+    // Grant rewards to both users
+    await grantRewards({
+      promotionId: customId,
+      referrerId,
+      newUserId: currentUserId,
+    });
+  } catch (error) {
+    console.error('Failed to process referral:', error);
+  }
+}
+```
 
-#### Responding 
+**Important security notes**
 
-#### Application 
+- Generate unique, non-guessable `custom_id` values.
+- Track & validate referrals server-side to prevent abuse.
+- **Do not** override the `referrer_id` query parameter directly.  
+  When present, `referrer_id` is expected to be a Discord snowflake user ID; otherwise it will be set to the message author’s ID by Discord.
 
-#### Commands 
+---
 
-#### Overview 
+## Link Sharing Best Practices
 
-#### Using Message 
+- Handle edge cases (e.g., expired promotions) gracefully.
+- Consider cool-down periods between shares to reduce spam.
+- Localize share copy where useful.
+- Ensure your server validates campaign status and user eligibility before granting rewards.
 
-#### Components 
+---
 
-#### Using Modal 
+## Creating and Managing Custom Incentivized Links
 
-#### Components 
+Use the **Developer Portal** to create branded “Custom Links” that control how your link appears as an embed off-platform.
 
-#### Component 
+### Creating a Link
 
-#### Reference 
+1. In your application’s portal, open **Activities → Custom Links**.
+2. Click **Create New**.
+3. Upload an image (aspect ratio **43:24**).
+4. Provide **Title** and **Description** (required).
+5. Optionally set a **custom_id** (a `custom_id` present in the URL itself will override this).
+6. Click **Save**.
 
-#### Home > Activities > Development Guides > Growth and 
+### Editing a Link
 
-#### Referrals 
+1. Click on a row to open the edit modal.
+2. Update the fields (e.g., description).
+3. Click **Update**.
 
-# Growth and 
+### Copying a Link
 
-# Referrals 
+- Click the **copy** icon on the row. The icon turns green to confirm copy.  
+- Share the URL anywhere. It looks like:
+  ```
+  https://discord.com/activities/<YOUR_ACTIVITY_ID>?link_id=0-123456789
+  ```
+  Even if a **custom_id** is set in the portal, it won’t appear in the URL but will load when the user clicks the link.
+- You may optionally shorten the URL.
 
-## Prompting Users to Share 
+### Deleting a Link
 
-## Incentivized Links 
+1. Click the **trash** icon on the link’s row.
+2. Confirm the deletion in the dialog.
 
-#### Incentivized sharing can help grow your Activity through 
+> **Warning:** Deletion is **immediate** and **irreversible**. Ensure your link isn’t actively used, and that your Activity gracefully handles any post-deletion visits.
 
-#### network effects. You can use links in several different ways 
+### Best Practices
 
-#### such as: 
+- Generate unique, non-guessable `custom_id`s.
+- Track and validate referrals to prevent abuse.
+- Gracefully handle expirations for any time-limited links still circulating off-platform.
 
-#### Referral links. Users can copy referral links inside 
+### User Experience
 
-#### your Activity, which include their Discord user ID ( 
+- Users see an embed with your configured image, title, and description.
+- Clicking **Play** opens the Activity and passes through your `custom_id`.
+- A `referrer_id` will be present for links shared on Discord.
 
- https://discord.com/activities/<your Activity ID>?referrer_id=123456789 
+---
 
-#### ), and they can send to their friends. If their friend 
+## Generating a Custom Link Within Your Activity
 
-#### Search ⌘ K 
+You can also generate **ephemeral, customizable links** directly from your Activity:
 
+- Customize the embed presentation (image/title/description).
+- Generate on-demand.
+- **Ephemeral** with a **30-day TTL**.
+- These do **not** appear in the Developer Portal.
 
-#### Overview 
+### Generating a Link
 
-#### How Activities Work 
+```ts
+import { DiscordSDK } from '@discord/embedded-app-sdk';
 
-#### Quickstart 
+// Convert an image ArrayBuffer to a base64-encoded string ahead of time
+const image = base64EncodedImage; // e.g., "data:image/png;base64,AAAA..."
 
-#### Development Guides 
+const res = await fetch(`${env.discordAPI}/applications/${env.applicationId}/...`, {
+  method: 'POST',
+  headers: {
+    Authorization: `Bearer ${accessToken}`, // user token from OAuth
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    custom_id: 'user_123/game_456',
+    description: 'I just beat level 10 with a perfect score',
+    title: 'Check out my high score!',
+    image, // base64 data URL string
+  }),
+});
 
-#### Local Development 
+// The endpoint returns a JSON payload with a link_id
+const { link_id } = await res.json();
 
-#### User Actions 
+// Open the Share modal in Discord with the generated link
+const { success } = await discordSdk.commands.shareLink({
+  message: 'Check out my high score!',
+  link_id,
+});
 
-#### Mobile 
+if (success) {
+  console.log('User shared link!');
+} else {
+  console.log('User did not share link');
+}
+```
 
-#### Layout 
+> **Note:** The exact REST path for link creation may vary; consult your latest API docs. The returned payload must include a `link_id`, which you pass to `discordSdk.commands.shareLink({ link_id })`.
 
-#### Networking 
+---
 
-#### Multiplayer 
+## Appendix: Quick Reference
 
-#### accepts and starts playing your game, then you gift the 
-
-#### referrer something inside your game. 
-
-#### Promotions. You can run a temporary promotion on 
-
-#### social media, where you offer a reward if they start 
-
-#### playing now. Share a custom link on your social media ( 
-
- https://discord.com/activities/<your Activity ID>?custom_id=social012025 
-
-#### ). Anyone who clicks that speci!c link receives 
-
-#### something inside your game. 
-
-#### Social deep-links. Currently, when users launch an 
-
-#### Activity, they all land in the same place. Instead, you 
-
-#### can start deep-linking to contextually relevant points in 
-
-#### your game. For example, user A can copy a link inside 
-
-#### your Activity for engaging other users ( 
-
- https://discord.com/activities/<your Activity ID>? referrer_id=123456789&custom_id=visitlocation 
-
-#### ), and sends the link to their friends in a DM or channel. 
-
-#### Then, user B who clicks the link gets taken directly to 
-
-#### user A’s location. 
-
-#### Turn-based deep-links. When you send an “it’s your 
-
-#### turn” DM to a user, you can include a link which takes 
-
-#### them directly to the right game instance and the turn 
-
-#### they need to take. 
-
-#### Af!liate marketing. You can work with af!liates 
-
-
-#### (in"uencers, companies, etc) to advertise your game to 
-
-#### their followings, and reward them via a custom link ( 
-
- https://discord.com/activities/<your Activity ID>?custom_id=influencer1 
-
-#### ). Then, for every user that starts playing because of 
-
-#### said in"uencer, you can then pay out to the in"uencer. 
-
-#### Source attribution. You can use the custom_id 
-
-#### parameter to !gure out how much traf!c you’re getting 
-
-#### from different marketing sources. 
-
-#### This guide covers implementing a referral link which will 
-
-#### feature a reward system for users who share links and those 
-
-#### who click them. 
-
-#### 1. Create and track an incentivized link for a 
-
-#### promotional campaign, then prompt users to share the 
-
-#### link 
-
-#### 2. Handle incoming referrals and grant valid rewards 
-
-#### When implementing sharing, you'll need to: 
-
-#### 1. Generate a unique ID for tracking the promotion 
-
-#### 2. Call the shareLink command 
-
-### Implementation Overview 
-
-### Sharing Links 
-
-
-#### 3. Track the share attempt 
-
-#### When a user clicks a shared link, your activity will launch 
-
-#### with referral data available through the SDK: 
-
- // Generate a unique ID for this promotion // This could be per-campaign, per-user, or per-share depending on your needs const customId = await createPromotionalCustomId(); try { const { success } = await discordSdk.commands.shareLink({ message: 'Click this link to redeem 5 free coins!', custom_id: customId, }); if (success) { // Track successful share for analytics/limiting await trackSuccessfulShare(customId); } } catch (error) { // Handle share failures appropriately console.error('Failed to share link:', error); } 
-
-### Handling Incoming Referrals 
-
- // Early in your activity's initialization async function handleReferral() { // Validate the referral data if (!discordSdk.customId || !discordSdk.referrerId) { return; 
-
-
-#### Generate unique, non-guessable customId s 
-
-#### Track and validate referrals to prevent abuse 
-
-##### } 
-
- try { // Verify this is a valid promotion and hasn't expired const promotion = await validatePromotion(discordSdk.customId); if (!promotion) { console.log('Invalid or expired promotion'); return; } // Prevent self-referrals if (discordSdk.referrerId === currentUserId) { console.log('Self-referrals not allowed'); return; } // Grant rewards to both users await grantRewards({ promotionId: discordSdk.customId, referrerId: discordSdk.referrerId, newUserId: currentUserId }); } catch (error) { console.error('Failed to process referral:', error); } } 
-
-### Link Sharing Best Practices 
-
-
-#### Handle edge cases like expired promotions gracefully 
-
-#### Consider implementing cool-down periods between 
-
-#### shares 
-
-#### Do not override the referrer_id query parameter 
-
-#### directly. When present, referrer_id is expected to be 
-
-#### a Discord snow"ake-type user ID, otherwise it will be 
-
-#### set to the message's author id. 
-
-## Creating and Managing Custom 
-
-## Incentivized Links 
-
-#### This guide covers creating a customizable Incentivized Link 
-
-#### through the dev portal, and then retrieving the link to be 
-
-#### able to share it off-platform. Incentivized Links are used to 
-
-#### customize how the embed appears to users. 
-
-#### 1. In your Application's portal, visit the Custom Links 
-
-#### page under the Activities heading in the navigation 
-
-#### pane. 
-
-#### 2. On the Custom Links page, click Create New to 
-
-#### create a new link. 
-
-### Creating a Link 
-
-
-#### 3. You will need to upload an image with an aspect ratio 
-
-#### of 43:24. 
-
-#### 4. Title, and description are also required. 
-
-#### 5. custom_id is an optional !eld, an explicit 
-
-#### custom_id query parameter on the link itself will 
-
-#### always override the set custom_id. 
-
-#### 6. Click Save. 
-
-#### 1. Click on a row to open up the modal with all of the 
-
-#### data loaded in ready for your edits. 
-
-#### 2. Change the description to something else. 
-
-#### 3. Click Update. 
-
-#### Once you're satis!ed with your changes you can click on the 
-
-#### copy icon on the row, it'll change colors to green indicating 
-
-#### that it copied to your clipboard. You are now able to share 
-
-#### this link anywhere. The link will look like: 
-
- https://discord.com/activities/<your Activity ID>?link_id=0-123456789 
-
-#### . Even if you've set a custom_id , it won't be explicitly 
-
-#### included in the link but will be loaded once a user clicks on 
-
-#### the link. You can then further shorten this URL if you'd like. 
-
-### Editing a Link 
-
-### Copying a Link 
-
-
-#### 1. Click on the trash icon on the row of the link you're 
-
-#### trying to delete. 
-
-#### 2. You'll have a con!rm dialog pop up. 
-
-#### Deleting is irreversible and immediate. Ensure that 
-
-#### your link isn't in active use before deleting and/or 
-
-#### that your activity gracefully handles any click
-
-#### throughs from the link. 
-
-#### Generate unique, non-guessable customId s 
-
-#### Track and validate referrals to prevent abuse 
-
-#### Gracefully handle expirations in your activity for any 
-
-#### custom links that are limited time but still live off
-
-#### platform. 
-
-### Deleting a Link 
-
-### Best Practices 
-
-### User Experience 
-
-
-#### Users will see an embed with your information displayed. 
-
-#### Clicking "Play" opens the activity and passes through the 
-
-#### custom_id you've set. A referrer_id will be present for 
-
-#### links shared on Discord. 
-
-## Generating a Custom Link Within 
-
-## Your Activity 
-
-#### This guide covers creating a customizable Incentivized Link 
-
-#### within your activity, and using the shareLink API to share 
-
-#### the link. 
-
-#### Allows you to customize the way the link is presented 
-
-#### to users via the embed 
-
-#### Can be generated on-demand within your activity 
-
-
-#### Ephemeral, 30 day TTL 
-
-#### Does not show up in the developer portal 
-
-### Generating a Link 
-
- // Convert an image array buffer to base64 string const image = base64EncodedImage; // Generate the quick activity link const linkIdResponse = await fetch(${env.discordAPI}/applications/${env.applicat method: 'POST', headers: { Authorization: Bearer ${accessToken}, 'Content-Type': 'application/json', }, body: { custom_id: 'user_123/game_456', description: 'I just beat level 10 with a perfect score', title: 'Check out my high score!', image, } }); const {link_id} = await linkIdResponse.json(); // Open the Share modal with the generated link const {success} = await discordSdk.commands.shareLink({ message: 'Check out my high score!', link_id, }); success? console.log('User shared link!') : console.log('User did not share link 
-
-
+- **shareLink** — Presents a modal for the user to share a link with optional `message`, `custom_id`, or `link_id`.
+- **referrer_id** — Assigned by Discord for links shared on-platform; treat as authoritative (don’t override client-side).
+- **custom_id** — Arbitrary campaign or context identifier you assign; validate on your backend.
+- **Developer Portal → Activities → Custom Links** — Create, edit, copy, and delete branded links for off-platform sharing.
 

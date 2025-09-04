@@ -1,187 +1,105 @@
-**On this page** Application Orientation Application Layout Mode **QUICK START INTERACTIONS COMPONENTS ACTIVITIES** 
+# Layout
 
-#### API Reference 
+## Application Orientation
 
-#### Overview of Apps 
+This SDK provides APIs for locking the application to specific orientations. The possible lock states are:
 
-#### Getting Started 
+- **UNLOCKED**
+- **PORTRAIT**
+- **LANDSCAPE**
 
-#### Overview 
+`lock_state` is the default lock state, and it affects the app orientation when the application is focused.
 
-#### Receiving and 
+- `picture_in_picture_lock_state` determines the PIP aspect ratio.
+- `grid_lock_state` determines the grid tile aspect ratio for the application.
 
-#### Responding 
+When `picture_in_picture_lock_state` is not set, the application PIP falls back to `lock_state` to determine the aspect ratio.  
+When `grid_lock_state` is not set, the application grid tile falls back to `picture_in_picture_lock_state` to determine its aspect ratio.  
+If `picture_in_picture_lock_state` is also not set, it uses `lock_state`.
 
-#### Application 
+Calling `setOrientationLockState` with an **undefined** or **omitted** value for `picture_in_picture_lock_state` or `grid_lock_state` will not change the corresponding lock states for the application.  
+Calling `setOrientationLockState` with a **null** value for these fields will clear the corresponding lock states, causing them to use fallback states.
 
-#### Commands 
+### Example: Locking Application Orientation
 
-#### Overview 
+```javascript
+import { DiscordSDK, Common } from '@discord/embedded-app-sdk';
 
-#### Using Message 
+const discordSdk = new DiscordSDK(clientId);
+await discordSdk.ready();
 
-#### Components 
+// Set a default lock state
+discordSdk.commands.setOrientationLockState({
+  lock_state: Common.OrientationLockStateTypeObject.PORTRAIT,
+});
 
-#### Using Modal 
+// Or set both a default lock state and a picture-in-picture lock state
+discordSdk.commands.setOrientationLockState({
+  lock_state: Common.OrientationLockStateTypeObject.PORTRAIT,
+  picture_in_picture_lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE,
+  grid_lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE,
+});
+```
 
-#### Components 
+### Configuring Default Orientation Lock State Through the Developer Portal
 
-#### Component 
+It is also possible to configure a default orientation lock state via the **Developer Portal**.  
+Using this method, the Discord app applies the orientation lock before the SDK initializes, creating a smoother launch flow.  
+This ensures the application starts in the correct orientation immediately, instead of switching after a delay.
 
-#### Reference 
+The Developer Portal supports setting different default orientation lock states for **phones** versus **tablets**.
 
-#### Home > Activities > Development Guides > Layout 
+### Subscribing to Screen Orientation Updates
 
-# Layout 
+To listen for screen orientation (sometimes different from the physical device orientation), subscribe to the `ORIENTATION_UPDATE` event. Discord will publish the current orientation upon subscription and send updates for changes.
 
-## Application Orientation 
+```javascript
+const handleOrientationUpdate = (update: { screen_orientation: number }) => {
+  switch (update.screen_orientation) {
+    case Common.OrientationTypeObject.PORTRAIT:
+      // Handle portrait
+      break;
+    case Common.OrientationTypeObject.LANDSCAPE:
+      // Handle landscape
+      break;
+    default:
+      // Handle unknown orientation
+  }
+};
 
-#### This SDK provides APIs for locking the application to 
+discordSdk.subscribe('ORIENTATION_UPDATE', handleOrientationUpdate);
+```
 
-#### speci!c orientations. The possible lock states are 
+---
 
-#### UNLOCKED , PORTRAIT , and LANDSCAPE. lock_state is 
+## Application Layout Mode
 
-#### the default lock state, and it affects the app orientation 
+There are three layout modes that an application can be in:
 
-#### when the application is focused. 
+1. **Focused**
+2. **Picture-in-Picture (PIP)**
+3. **Grid Mode**
 
-#### picture_in_picture_lock_state determines the PIP 
+Activities can subscribe to the layout mode to determine when to update or optimize their layouts.
 
-#### aspect ratio, and grid_lock_state determines the grid 
+- Old Discord clients only support the `ACTIVITY_PIP_MODE_UPDATE` event.  
+- New Discord clients support both `ACTIVITY_PIP_MODE_UPDATE` and `ACTIVITY_LAYOUT_MODE_UPDATE`.
 
-#### tile aspect ratio for the application. When 
+Use `subscribeToLayoutModeUpdatesCompat` and `unsubscribeFromLayoutModeUpdatesCompat` for backward compatibility.
 
-#### picture_in_picture_lock_state is not set, the 
+### Example: Subscribing to Layout Mode Updates in React
 
-#### application PIP falls back to lock_state to determine the 
+```javascript
+export default function LayoutMode() {
+  const handleLayoutModeUpdate = React.useCallback((update: { layout_mode: number }) => {
+    // Handle layout mode update here
+  }, []);
 
-#### aspect ratio. When grid_lock_state is not set, the 
-
-### Locking Application Orientation 
-
-#### Search ⌘ K 
-
-
-#### Overview 
-
-#### How Activities Work 
-
-#### Quickstart 
-
-#### Development Guides 
-
-#### Local Development 
-
-#### User Actions 
-
-#### Mobile 
-
-#### Layout 
-
-#### Networking 
-
-#### Multiplayer 
-
-#### application grid tile falls back to 
-
-#### picture_in_picture_lock_state to determine its 
-
-#### aspect ratio, and if picture_in_picture_lock_state is 
-
-#### not set, it uses lock_state. 
-
-#### Calling setOrientationLockState with an undefined 
-
-#### or omitted value for picture_in_picture_lock_state 
-
-#### or grid_lock_state will not change the corresponding 
-
-#### lock states for the application. Calling 
-
-#### setOrientationLockState with a null value for 
-
-#### picture_in_picture_lock_state or 
-
-#### grid_lock_state will clear the application's 
-
-#### corresponding lock states such that those layout modes will 
-
-#### use the fallback lock states. 
-
- import {DiscordSDK, Common} from '@discord/embedded-app-sdk'; const discordSdk = new DiscordSDK(clientId); await discordSdk.ready(); // Set a default lock state discordSdk.commands.setOrientationLockState({lock_state: Common.OrientationLockSt // or set both a default lock state and a picture-in-picture lock state discordSdk.commands.setOrientationLockState({ lock_state: Common.OrientationLockStateTypeObject.PORTRAIT, picture_in_picture_lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE, grid_lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE, }); 
-
-
-#### It's also possible to con!gure an application with a default 
-
-#### orientation lock state via the Developer Portal. Using this 
-
-#### method, the Discord app will apply the orientation lock 
-
-#### when launching the application before the SDK has been 
-
-#### initialized. This can create a smoother application launch 
-
-#### "ow where the application starts in the correct orientation 
-
-#### rather than switching to the correct orientation after some 
-
-#### delay after the application requests an orientation lock via 
-
-#### the SDK. The Developer Portal supports setting a different 
-
-#### default orientation lock states for phones versus tablets. 
-
-#### To listen to the screen orientation (which is sometimes 
-
-#### different from the physical device orientation), subscribe to 
-
-### Con!guring Default Orientation Lock State 
-
-### Through the Developer Portal 
-
-### Subscribing to Screen Orientation Updates 
-
-
-#### the ORIENTATION_UPDATE event. Discord will publish the 
-
-#### current orientation upon event subscription, and it'll also 
-
-#### publish any orientation changes that happen afterward. 
-
-## Application Layout Mode 
-
-#### There are three layout modes that an application can be in: 
-
-#### focused, picture-in-picture (PIP), or grid mode. Activities 
-
-#### can subscribe to the layout mode to determine when to 
-
-#### optionally change their layouts to optimize for each layout 
-
-#### mode. Old Discord clients only support the 
-
-#### ACTIVITY_PIP_MODE_UPDATE event, while new Discord 
-
- const handleOrientationUpdate = (update: {screen_orientation: number}) => { switch (update.screen_orientation) { case Common.OrientationTypeObject.PORTRAIT: ... case Common.OrientationTypeObject.LANDSCAPE: ... default: ... } } discordSdk.subscribe('ORIENTATION_UPDATE', handleOrientationUpdate); 
-
-
-#### clients support both ACTIVITY_PIP_MODE_UPDATE and 
-
-#### ACTIVITY_LAYOUT_MODE_UPDATE. Use 
-
-#### subscribeToLayoutModeUpdatesCompat and 
-
-#### unsubscribeFromLayoutModeUpdatesCompat to 
-
-#### subscribe to both events with backward compatibility for 
-
-#### old Discord clients that only support 
-
-#### ACTIVITY_PIP_MODE_UPDATE. Here's an example using 
-
-#### React: 
-
- export default function LayoutMode() { const handleLayoutModeUpdate = React.useCallback((update: {layout_mode: number} ... }, []); React.useEffect(() => { discordSdk.subscribeToLayoutModeUpdatesCompat(handleLayoutModeUpdate); return () => { discordSdk.unsubscribeFromLayoutModeUpdatesCompat(handleLayoutModeUpdate); }; }, [handleLayoutModeUpdate]); } 
-
-
+  React.useEffect(() => {
+    discordSdk.subscribeToLayoutModeUpdatesCompat(handleLayoutModeUpdate);
+    return () => {
+      discordSdk.unsubscribeFromLayoutModeUpdatesCompat(handleLayoutModeUpdate);
+    };
+  }, [handleLayoutModeUpdate]);
+}
+```

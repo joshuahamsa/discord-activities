@@ -1,1228 +1,600 @@
-**On this page** Install the SDK SDK Methods SDK Commands SDK Events SDK Interfaces SDK Enums **MONETIZATION DISCOVERY** 
-
-##### Using with the 
-
-##### Embedded App SDK 
-
-##### Using with the 
-
-##### Discord Social SDK 
-
-##### Using with 
-
-##### the Game 
-
-##### SDK 
-
- LEGACY 
-
-##### Best Practices 
-
-##### Overview 
-
-##### Enabling 
-
-##### Monetization 
-
-##### Managing SKUs 
-
-##### Implementing App 
-
-##### Subscriptions 
-
-##### Implementing One
-
-##### Time Purchases 
-
-##### Implementing IAP for 
-
-##### Activities 
-
-##### Overview 
-
-# Embedded App 
-
-# SDK Reference 
-
-##### The Embedded App SDK handles making RPC calls 
-
-##### between your application and Discord. It is designed to 
-
-##### assist developers in developing interactive Activities like 
-
-##### games. 
-
-##### To learn more about building Activities, check out our 
-
-##### Building an Activity tutorial or explore our Sample Projects. 
-
-## Install the SDK 
-
-##### The Embedded App SDK is available via npm and GitHub. 
-
-##### In your frontend JavaScript project directory, install using 
-
-##### your package manager of choice. 
-
-##### Search ⌘ K 
-
-
-**EVENTS DEVELOPER TOOLS** 
-
-##### Enabling Discovery 
-
-##### Best Practices 
-
-##### Overview 
-
-##### Using Gateway 
-
-##### Gateway Events 
-
-##### Webhook Events 
-
-##### Embedded App SDK 
-
-##### After installing, you can import and instantiate the SDK in 
-
-##### your project. 
-
-## SDK Methods 
-
- NAME DESCRIPTION ready Resolves when your app has successfully connected to the Discord client subscribe Subscribe to an Embedded App SDK Event unsubscribe Unsubscribe to an Embedded App SDK Event close Close an Embedded App 
-
-### ready() 
-
-##### Resolves when your app has successfully connected to the 
-
- npm install @discord/embedded-app-sdk import { DiscordSDK } from "@discord/embedded-app-sdk"; const discordSdk = new DiscordSDK(DISCORD_CLIENT_ID); 
-
-
-##### Discord client. 
-
- WEB IOS ANDROID 
-
-##### No scopes required 
-
-##### ready(): Promise<void> 
-
-### subscribe() 
-
-#### Supported Platforms 
-
-#### Required Scopes 
-
-#### Signature 
-
-#### SDK Usage 
-
- async function setup() { await discordSdk.ready(); // The rest of your app logic } 
-
-
-##### Used to subscribe to a speci!c event from the list of SDK 
-
-##### Events. 
-
- WEB IOS ANDROID 
-
-##### Depends on the event. Refer to the Required Scopes for the 
-
-##### speci!c event you are subscribing to. 
-
-##### subscribe<Event>(event: Event, listener: 
-
-##### (data: EventPayloadData<Event>) => void, 
-
-##### ...subscribeArgs: 
-
-##### Partial<EventPayloadData<Event>>): 
-
-##### Promise<EventEmitter> 
-
-### unsubscribe() 
-
-#### Supported Platforms 
-
-#### Required Scopes 
-
-#### Signature 
-
-#### Usage 
-
- await discordSdk.subscribe("SDK_EVENT_NAME", eventHandler, args); 
-
-
-### unsubscribe() 
-
-##### Used to unsubscribe to SDK Events that your app has 
-
-##### already subscribed to. 
-
- WEB IOS ANDROID 
-
-##### No scopes required 
-
-##### The EventPayloadData will vary based on the event you 
-
-##### are unsubscribing from. See the speci!c event for details. 
-
-##### unsubscribe<Event>(event: Event, listener: 
-
-##### (data: EventPayloadData<Event>) => void, 
-
-##### ...subscribeArgs: 
-
-##### Partial<EventPayloadData<Event>>): 
-
-##### Promise<EventEmitter> 
-
-#### Supported Platforms 
-
-#### Required Scopes 
-
-#### Signature 
-
-#### Usage 
-
-
-### close() 
-
-##### Used to close your app with a speci!ed code and reason. 
-
- WEB IOS ANDROID 
-
-##### No scopes required 
-
-##### close(code: RPCCloseCodes, message: 
-
-##### string): void 
-
- await discordSdk.unsubscribe("SDK_EVENT_NAME"); 
-
-#### Supported Platforms 
-
-#### Required Scopes 
-
-#### Signature 
-
-#### SDK Usage 
-
- discordSdk.close(RPCCloseCodes.CLOSE_NORMAL, "You exited from app"); 
-
-
-## SDK Commands 
-
-##### Developers can use these commands to interact with the 
-
-##### Discord client. The following SDK commands are pre!xed 
-
-##### with .commands , such as, 
-
-##### discordSDK.commands.authenticate. 
-
- NAME DESCRIPTION authenticate Authenticate an existing client with your app authorize Authorize a new client with your app captureLog Forward logs to your own logger encourageHardwareAccele ration Presents a modal dialog to allow enabling of hardware acceleration getChannel Returns information about the channel, per the channel_id getChannelPermissions Returns permissions for the current user in the currently connected channel getEntitlements Returns a list of entitlements for the current user 
-
-
-getInstanceConnectedPar ticipants Returns all participants connected to the instance getPlatformBehaviors Returns information about supported platform behaviors getRelationships Returns the current user's relationships getSkus Returns a list of your app's SKUs initiateImageUpload Presents the !le upload "ow in the Discord client openExternalLink Allows for opening an external link from within the Discord client openInviteDialog Presents a modal dialog with Channel Invite UI without requiring additional OAuth scopes openShareMomentDialog Presents a modal dialog to share media to a channel or DM setActivity Modi!es how your activity's rich presence is displayed in the Discord client setCon!g Set whether or not the PIP (picture-in-picture) is interactive setOrientationLockState Set options for orientation and picture-in-picture (PIP) modes 
-
-
- shareLink Presents a modal for the user to share a link to your activity with custom query params startPurchase Launches the purchase "ow for a speci!c SKU, per the sku_id userSettingsGetLocale Returns the current user's locale 
-
-### authenticate() 
-
-##### Authenticate an existing client with your app. 
-
- WEB IOS ANDROID 
-
-##### No scopes required 
-
-##### authenticate(args: AuthenticateRequest): 
-
-##### Promise<AuthenticateResponse> 
-
-#### Supported Platforms 
-
-#### Required Scopes 
-
-#### Signature 
-
-
-### authorize() 
-
-##### Authorize a new client with your app. 
-
- WEB IOS ANDROID 
-
-##### No scopes required 
-
-##### authorize(args: AuthorizeRequest): 
-
-##### Promise<AuthorizeResponse> 
-
-#### Usage 
-
- await discordSdk.commands.authenticate({ access_token: 'ACCESS_TOKEN_STRING' }); 
-
-#### Supported Platforms 
-
-#### Required Scopes 
-
-#### Signature 
-
-
-### captureLog() 
-
-#### Usage 
-
- await discordSdk.commands.authorize({ client_id: DISCORD_CLIENT_ID, response_type: "code", state: "", prompt: "none", scope: [ // "applications.builds.upload", // "applications.builds.read", // "applications.store.update", // "applications.entitlements", // "bot", "identify", // "connections", // "email", // "gdm.join", "guilds", // "guilds.join", // "guilds.members.read", // "messages.read", // "relationships.read", // 'rpc.activities.write', // "rpc.notifications.read", // "rpc.voice.write", // "rpc.voice.read", // "webhook.incoming", ], }); 
-
-
-### captureLog() 
-
-##### Forward logs to your own logger. 
-
- WEB IOS ANDROID 
-
-##### No scopes required 
-
-##### captureLog(args: CaptureLogRequest): 
-
-##### Promise<void> 
-
-### encourageHardwareAcceleration() 
-
-#### Supported Platforms 
-
-#### Required Scopes 
-
-#### Signature 
-
-#### Usage 
-
- await discordSdk.commands.captureLog({ level: 'log', message: 'This is my log message!' }); 
-
-
-### encourageHardwareAcceleration() 
-
-##### Presents a modal dialog to allow enabling of hardware 
-
-##### acceleration. 
-
- WEB IOS ANDROID 
-
-##### No scopes required 
-
-##### encourageHardwareAcceleration(): 
-
-##### Promise<EncourageHardwareAccelerationResponse> 
-
-### getChannel() 
-
-#### Supported Platforms 
-
-#### Required Scopes 
-
-#### Signature 
-
-#### Usage 
-
- await discordSdk.commands.encourageHardwareAcceleration(); 
-
-
-##### Returns information about the channel for a provided 
-
-##### channel ID. 
-
- WEB IOS ANDROID 
-
-##### [guilds] for guild channels 
-
-##### [guilds, dm_channels.read] for GDM channels. 
-
-##### dm_channels.read requires approval from Discord. 
-
-##### getChannel(args: GetChannelRequest): 
-
-##### Promise<GetChannelResponse> 
-
-### getChannelPermissions() 
-
-#### Supported Platforms 
-
-#### Required Scopes 
-
-#### Signature 
-
-#### Usage 
-
- await discordSdk.commands.getChannel({ channel_id: discordSdk.channelId, }); 
-
-
-### getChannelPermissions() 
-
-##### Returns permissions for the current user in the currently 
-
-##### connected channel. 
-
- WEB IOS ANDROID 
-
-##### guilds.members.read 
-
-##### getChannelPermissions(): 
-
-##### Promise<GetChannelPermissionsResponse> 
-
-### getEntitlements() 
-
-#### Supported Platforms 
-
-#### Required Scopes 
-
-#### Signature 
-
-#### Usage 
-
- await discordSdk.commands.getChannelPermissions(); 
-
-
-##### Returns a list of entitlements for the current user. 
-
- WEB IOS ANDROID 
-
-##### No scopes required 
-
-##### getEntitlements(): 
-
-##### Promise<GetEntitlementsResponse> 
-
-### getInstanceConnectedParticipants() 
-
-##### Returns all participants connected to the instance. 
-
-#### Supported Platforms 
-
-#### Required Scopes 
-
-#### Signature 
-
-#### Usage 
-
- await discordSdk.commands.getEntitlements(); 
-
-
- WEB IOS ANDROID 
-
-##### No scopes required 
-
-##### getInstanceConnectedParticipants(): 
-
-##### Promise<GetInstanceConnectedParticipantsResponse> 
-
-### getPlatformBehaviors() 
-
-##### Returns information about supported platform behaviors. 
-
- WEB IOS ANDROID 
-
-#### Supported Platforms 
-
-#### Required Scopes 
-
-#### Signature 
-
-#### Usage 
-
- await discordSdk.commands.getInstanceConnectedParticipants(); 
-
-#### Supported Platforms 
-
-
-##### No scopes required 
-
-##### getPlatformBehaviors(): 
-
-##### Promise<GetPlatformBehaviorsResponse> 
-
-### getRelationships() 
-
-##### Returns the current user's relationships. 
-
- WEB IOS ANDROID 
-
-#### Required Scopes 
-
-#### Signature 
-
-#### Usage 
-
- await discordSdk.commands.getPlatformBehaviors(); 
-
-#### Supported Platforms 
-
-
-##### relationships.read 
-
-##### Requires Discord approval 
-
-##### getRelationships(): 
-
-##### Promise<GetRelationshipsResponse> 
-
-### getSkus() 
-
-##### Returns a list of SKU objects. SKUs without prices are 
-
-##### automatically !ltered out. 
-
- WEB IOS ANDROID 
-
-#### Required Scopes 
-
-#### Signature 
-
-#### Usage 
-
- await discordSdk.commands.getRelationships(); 
-
-#### Supported Platforms 
-
-
-##### No scopes required 
-
-##### getSkus(): Promise<GetSkusResponse> 
-
-### initiateImageUpload() 
-
-##### Presents the !le upload "ow in the Discord client. 
-
- WEB IOS ANDROID 
-
-##### No scopes required 
-
-#### Required Scopes 
-
-#### Signature 
-
-#### Usage 
-
- await discordSdk.commands.getSkus(); 
-
-#### Supported Platforms 
-
-#### Required Scopes 
-
-
-##### initiateImageUpload(): 
-
-##### Promise<InitiateImageUploadResponse> 
-
-### openExternalLink() 
-
-##### Allows for opening an external link from within the Discord 
-
-##### client. 
-
- WEB IOS ANDROID 
-
-##### No scopes required 
-
-#### Signature 
-
-#### Usage 
-
- await discordSdk.commands.initiateImageUpload(); 
-
-#### Supported Platforms 
-
-#### Required Scopes 
-
-#### Signature 
-
-
-##### openExternalLink(args: 
-
-##### OpenExternalLinkRequest): 
-
-##### Promise<OpenExternalLinkResponse> 
-
-### openInviteDialog() 
-
-##### Presents a modal dialog with Channel Invite UI without 
-
-##### requiring additional OAuth scopes. 
-
- WEB IOS ANDROID 
-
-##### No scopes required 
-
-#### Usage 
-
- await discordSdk.commands.openExternalLink({ url: 'string url' }); 
-
-#### Supported Platforms 
-
-#### Required Scopes 
-
-
-##### openInviteDialog(): Promise<void> 
-
-### openShareMomentDialog() 
-
-##### Presents a modal dialog to share media to a channel or 
-
-##### direct message. 
-
- WEB IOS ANDROID 
-
-##### No scopes required 
-
-#### Signature 
-
-#### Usage 
-
- await discordSdk.commands.openInviteDialog(); 
-
-#### Supported Platforms 
-
-#### Required Scopes 
-
-#### Signature 
-
-
-##### openShareMomentDialog(args: 
-
-##### OpenShareMomentDialogRequest) 
-
-##### Promise<void> 
-
-### setActivity() 
-
-##### Modi!es how your Activity's Rich Presence data is 
-
-##### displayed in the Discord client. The inner activity !eld is 
-
-##### a partial Activity object. 
-
-##### Read the guide on Using Rich Presence with the Embedded 
-
-##### App SDK for more usage details. 
-
- WEB IOS ANDROID 
-
-#### Usage 
-
- await discordSdk.commands.openShareMomentDialog({ mediaUrl: 'DISCORD_CDN_URL' }); 
-
-#### Supported Platforms 
-
-
-##### rpc.activities.write 
-
-##### setActivity(args: SetActivityRequest): 
-
-##### Promise<Activity> 
-
-### setCon!g() 
-
-##### Set whether or not the PIP (picture-in-picture) is 
-
-##### interactive. 
-
- WEB IOS ANDROID 
-
-#### Required Scopes 
-
-#### Signature 
-
-#### Usage 
-
- await discordSdk.commands.setActivity({ activity: { type: 0 , details: 'Details', state: 'Playing' } }); 
-
-#### Supported Platforms 
-
-
-##### No scopes required 
-
-##### setConfig(args: SetConfigRequest): 
-
-##### Promise<SetConfigResponse> 
-
-### setOrientationLockState() 
-
-##### Locks the application to speci!c orientations in each of the 
-
-##### supported layout modes. 
-
-#### Required Scopes 
-
-#### Signature 
-
-#### Usage 
-
- await discordSdk.commands.setConfig({ use_interactive_pip: true }) 
-
-#### Supported Platforms 
-
-
- WEB IOS ANDROID 
-
-##### No scopes required 
-
-##### setOrientationLockState(args: 
-
-##### SetOrientationLockStateRequest): 
-
-##### Promise<void> 
-
-### shareLink() 
-
-#### Required Scopes 
-
-#### Signature 
-
-#### Usage 
-
- import {Common} from '@discord/embedded-app-sdk'; await discordSdk.commands.setOrientationLockState({ lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE, picture_in_picture_lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE, grid_lock_state: Common.OrientationLockStateTypeObject.UNLOCKED }); 
-
-
-##### Presents the user with a modal to share a link 
-
- WEB IOS ANDROID 
-
-##### No scopes required 
-
-##### shareLink(args: ShareLinkRequest): 
-
-##### Promise<ShareLinkResponse><void> 
-
-### startPurchase() 
-
-#### Supported Platforms 
-
-#### Required Scopes 
-
-#### Signature 
-
-#### Usage 
-
- const { success } = await discordSdk.commands.shareLink({ message: 'This message is shared alongside the link!', custom_id: 'some_custom_id', }); success? console.log('User shared link!') : console.log('User did not share link 
-
-
-### startPurchase() 
-
-##### Launches the purchase "ow for a speci!c SKU ID. 
-
- WEB IOS ANDROID 
-
-##### No scopes required 
-
-##### startPurchase(args: StartPurchaseRequest): 
-
-##### Promise<StartPurchaseResponse> 
-
-### userSettingsGetLocale() 
-
-#### Supported Platforms 
-
-#### Required Scopes 
-
-#### Signature 
-
-#### Usage 
-
- await discordSdk.commands.startPurchase({sku_id: skuId}); 
-
-
-##### Returns the current user's locale. 
-
- WEB IOS ANDROID 
-
-##### identify 
-
-##### userSettingsGetLocale(): 
-
-##### Promise<UserSettingsGetLocaleResponse> 
-
-## SDK Events 
-
-##### Developers may use the following events alongside the 
-
-##### subscribe() SDK method to subscribe to events from 
-
-#### Supported Platforms 
-
-#### Required Scopes 
-
-#### Signature 
-
-#### Usage 
-
- await discordSdk.commands.userSettingsGetLocale(); 
-
-
-##### Discord and supported devices. 
-
- NAME DESCRIPTION READY non-subscription event sent immediately after connecting, contains server information ERROR non-subscription event sent when there is an error, including command responses VOICE_STATE_UPDATE sent when a user's voice state changes in a subscribed voice channel (mute, volume, etc.) SPEAKING_START sent when a user in a subscribed voice channel speaks SPEAKING_STOP sent when a user in a subscribed voice channel stops speaking ACTIVITY_LAYOUT_MODE_UP DATE Received when a user changes the layout mode in the Discord client ORIENTATION_UPDATE Received when screen orientation changes CURRENT_USER_UPDATE Received when the current user object changes 
-
-
-###### CURRENT_GUILD_MEMBER_ 
-
-###### UPDATE 
-
- Received when the current guild member object changes THERMAL_STATE_UPDATE Received when Android or iOS thermal states are surfaced to the Discord app ACTIVITY_INSTANCE_PARTICI PANTS_UPDATE Received when the number of instance participants changes RELATIONSHIP_UPDATE Received when a relationship of the current user is updated ENTITLEMENT_CREATE Received when an entitlement is created for a SKU 
-
-### READY 
-
-##### Non-subscription event sent immediately after connecting, 
-
-##### contains server information. 
-
-##### No scopes required 
-
-#### Required Scopes 
-
-#### Sample Event Payload 
-
-###### { 
-
- "v": 1 , 
-
-
-### ERROR 
-
-##### Non-subscription event sent when there is an error, 
-
-##### including command responses. 
-
-##### No scopes required 
-
-### VOICE_STATE_UPDATE 
-
- "config": { "cdn_host": "cdn.discordapp.com", "api_endpoint": "//discord.com/api", "environment": "production" } } 
-
-#### Required Scopes 
-
-#### Sample Event Payload 
-
-###### { 
-
- "code": 4006 , "message": "Not authenticated or invalid scope" } 
-
-
-##### Received when a user's voice state changes in a subscribed 
-
-##### voice channel (mute, volume, etc). 
-
-##### rpc.voice.read 
-
-#### Required Scopes 
-
-#### Sample Event Payload 
-
-###### { 
-
- "voice_state": { "mute": false, "deaf": false, "self_mute": false, "self_deaf": false, "suppress": false }, "user": { "id": "190320984123768832", "username": "test 2", "discriminator": "7479", "avatar": "b004ec1740a63ca06ae2e14c5cee11f3", "bot": false }, "nick": "test user 2", "volume": 110 , "mute": false, "pan": { "left": 1.0, "right": 1.0 } 
-
-
-### SPEAKING_START 
-
-##### Received when a user in a subscribed voice channel speaks. 
-
-##### rpc.voice.read 
-
-### SPEAKING_STOP 
-
-##### Received when a user in a subscribed voice channel stops 
-
-##### speaking. 
-
-###### } 
-
-#### Required Scopes 
-
-#### Sample Event Payload 
-
-###### { 
-
- "channel_id": "7173758092142710784", "user_id": "7173758143913005056" } 
-
-
-##### rpc.voice.read 
-
-### ACTIVITY_LAYOUT_MODE_UPDATE 
-
-##### Received when a user changes the layout mode in the 
-
-##### Discord client. 
-
-##### No scopes required 
-
-#### Required Scopes 
-
-#### Sample Event Payload 
-
-###### { 
-
- "channel_id": "7173758211307081728", "user_id": "7173758261412237312" } 
-
-#### Required Scopes 
-
-#### Sample Event Payload 
-
-###### { 
-
- "layout_mode": 1 } 
-
-
-### ORIENTATION_UPDATE 
-
-##### Received when screen orientation changes. 
-
-##### No scopes required 
-
-### CURRENT_USER_UPDATE 
-
-##### Received when the current user object changes. 
-
-##### identify 
-
-#### Required Scopes 
-
-#### Sample Event Payload 
-
-###### { 
-
- "screen_orientation": 1 } 
-
-#### Required Scopes 
-
-#### Sample Event Payload 
-
-
-### CURRENT_GUILD_MEMBER_UPDATE 
-
-##### Received when the current guild member object changes. 
-
-##### identify 
-
-##### guilds.members.read 
-
-###### { 
-
- "id": "7173771622812225536", "username": "beef_supreme", "discriminator": "0", "global_name": "Dis Cord", "avatar": "abcdefg", "avatar_decoration_data": { "asset": "abcdefg", "sku_id": "123456789" }, "bot": false, "flags": 1 , "premium_type": 2 } 
-
-#### Required Scopes 
-
-#### Sample Event Payload 
-
-###### { 
-
-
-### THERMAL_STATE_UPDATE 
-
-##### Received when Android or iOS thermal states are surfaced 
-
-##### to the Discord mobile app. 
-
-##### No scopes required 
-
- "user_id": "7173771622812225536", "nick": "beef_supreme", "guild_id": "613425648685547541" "avatar": "abcdefg", "avatar_decoration_data": { "asset": "abcdefg", "sku_id": "123456789" }, "color_string": "#ffff00" } 
-
-#### Required Scopes 
-
-#### Sample Event Payload 
-
-###### { 
-
- thermal_state: 0 } 
-
-
-### ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE 
-
-##### Received when the number of instance participants 
-
-##### changes. 
-
-##### No scopes required 
-
-#### Required Scopes 
-
-#### Sample Event Payload 
-
-###### { 
-
- "participants": [ { "id": "7173771622812225536", "username": "beef_supreme", "discriminator": "0", "global_name": "Dis Cord", "avatar": "abcdefg", "avatar_decoration_data": { "asset": "abcdefg", "sku_id": "123456789" }, "bot": false, "flags": 1 , "premium_type": 2 } ] 
-
-
-### RELATIONSHIP_UPDATE 
-
-##### Received when a relationship of the current user is 
-
-##### updated. 
-
-##### relationships.read 
-
-##### Requires Discord approval 
-
-###### } 
-
-#### Required Scopes 
-
-#### Sample Event Payload 
-
-###### { 
-
- "type": 1 , "user": { "id": "7173771622812225536", "username": "beef_supreme", "discriminator": "0", "global_name": "Dis Cord", "avatar": "abcdefg", "avatar_decoration_data": { "asset": "abcdefg", "sku_id": "123456789" 
-
-
-### ENTITLEMENT_CREATE 
-
-##### Coming soon! Not available during Developer Preview 
-
-## SDK Interfaces 
-
- PROPERTY TYPE name string type number url? string | null created_at? number | null 
-
-###### }, 
-
- "bot": false, "flags": 1 , "premium_type": 2 } } 
-
-#### Activity 
-
-
- timestamps? Timestamp | null application_id? string | null details? string | null details_url? string | null state? string | null state_url? string | null emoji? Emoji | null party? Party | null assets? Assets | null secrets? Secrets | null instance? boolean | null "ags? number | null PROPERTY TYPE large_image? string | null large_text? string | null large_url? string | null 
-
-#### Assets 
-
-
- small_image? string | null small_text? string | null small_url? string | null PROPERTY TYPE description string icon? string | null id string rpc_origins? string[] name string PROPERTY TYPE id string !lename string size number url string proxy_url string 
-
-#### Application 
-
-#### Attachment 
-
-
- height? number | null width? number | null PROPERTY TYPE access_token? string | null PROPERTY TYPE access_token string user User scopes string[] expires string application Application PROPERTY TYPE client_id string scope OAuthScopes[] 
-
-#### AuthenticateRequest 
-
-#### AuthenticateResponse 
-
-#### AuthorizeRequest 
-
-
- response_type? 'code' code_challenge? string state? string prompt? 'none' code_challenge_method? 'S256' PROPERTY TYPE code string PROPERTY TYPE asset string sku_id? string | null PROPERTY TYPE level ConsoleLevel message string 
-
-#### AuthorizeResponse 
-
-#### AvatarDecorationData 
-
-#### CaptureLogRequest 
-
-
- PROPERTY TYPE id string guild_id string type number name string PROPERTY TYPE title? string | null type? string | null description? string | null url? string | null timestamp? string | null color? number | null footer? EmbedFooter | null image? Image | null thumbnail? Image | null 
-
-#### ChannelMention 
-
-#### Embed 
-
-
- video? Video | null provider? EmbedProvider | null author? EmbedAuthor | null !elds? EmbedField[] | null PROPERTY TYPE name? string | null url? string | null icon_url? string | null proxy_icon_url? string | null PROPERTY TYPE name string value string inline boolean 
-
-#### EmbedAuthor 
-
-#### EmbedField 
-
-#### EmbedFooter 
-
-
- PROPERTY TYPE text string icon_url? string | null proxy_icon_url? string | null PROPERTY TYPE name? string | null url? string | null PROPERTY TYPE id string name? string | null roles? string[] | null user? User | null require_colons? boolean | null managed? boolean | null animated? boolean | null 
-
-#### EmbedProvider 
-
-#### Emoji 
-
-
- available? boolean | null PROPERTY TYPE enabled boolean PROPERTY TYPE id string sku_id string application_id string user_id string gift_code_"ags number type string | number gifter_user_id? string | null branches? string[] | null starts_at? string | null ends_at? string | null parent_id? string | null 
-
-#### EncourageHardwareAccelerationResponse 
-
-#### Entitlement 
-
-
- consumed? boolean | null deleted? boolean | null gift_code_batch_id? string | null PROPERTY TYPE permissions bigint | string PROPERTY TYPE channel_id string PROPERTY TYPE id string type ChannelTypesObject guild_id? string | null name? string | null topic? string | null 
-
-#### GetChannelPermissionsResponse 
-
-#### GetChannelRequest 
-
-#### GetChannelResponse 
-
-
- bitrate? number | null user_limit? number | null position? number | null voice_states UserVoiceState[] messages Message[] PROPERTY TYPE entitlements Entitlement[] PROPERTY TYPE participants User[] PROPERTY TYPE iosKeyboardResizesView? boolean PROPERTY TYPE 
-
-#### GetEntitlementsResponse 
-
-#### GetInstanceConnectedParticipantsResponse 
-
-#### GetPlatformBehaviorsResponse 
-
-#### GetRelationshipsResponse 
-
-
- relationships Relationship[] PROPERTY TYPE skus Sku[] PROPERTY TYPE user User nick? string | null roles string[] joined_at string deaf boolean mute boolean PROPERTY TYPE user_id string nick? string | null 
-
-#### GetSkusResponse 
-
-#### GuildMember 
-
-#### GuildMemberRPC 
-
-
- guild_id string avatar? string | null avatar_decoration_data? AvatarDecorationData | null color_string? string | null PROPERTY TYPE url? string | null proxy_url? string | null height? number | null width? number | null PROPERTY TYPE image_url string PROPERTY TYPE id string 
-
-#### Image 
-
-#### InitiateImageUploadResponse 
-
-#### Message 
-
-
-channel_id string guild_id? string | null author? User | null member? GuildMember | null content string timestamp string edited_timestamp? string | null tts boolean mention_everyone boolean mentions User[] mention_roles string[] mention_channels ChannelMention[] attachments Attachment[] embeds Embed[] reactions? Reaction[] | null nonce? string pinned boolean webhook_id? string | null 
-
-
- type number activity? MessageActivity | null application? MessageApplication | null message_reference? MessageReference | null "ags? number stickers? Sticker[] | null referenced_message? Message | null PROPERTY TYPE type number party_id? string | null PROPERTY TYPE id string cover_image? string | null description string 
-
-#### MessageActivity 
-
-#### MessageApplication 
-
-
- icon? string | null name string PROPERTY TYPE message_id? string | null channel_id? string | null guild_id? string | null PROPERTY TYPE url string 
-
-##### { opened: null } is returned on Discord clients 
-
-##### before December 2024 that do not report the open 
-
-##### link result. 
-
- PROPERTY TYPE opened boolean | null 
-
-#### MessageReference 
-
-#### OpenExternalLinkRequest 
-
-#### OpenExternalLinkResponse 
-
-
- PROPERTY TYPE mediaUrl string PROPERTY TYPE id? string | null size? number[] | null PROPERTY TYPE count number me boolean emoji Emoji PROPERTY TYPE type number user User 
-
-#### OpenShareMomentDialogRequest 
-
-#### Party 
-
-#### Reaction 
-
-#### Relationship 
-
-
- PROPERTY TYPE join? string match? string PROPERTY TYPE activity Activity PROPERTY TYPE use_interactive_pip boolean PROPERTY TYPE use_interactive_pip boolean PROPERTY TYPE lock_state OrientationLockState 
-
-#### Secrets 
-
-#### SetActivityRequest 
-
-#### SetCon!gRequest 
-
-#### SetCon!gResponse 
-
-#### SetOrientationLockStateRequest 
-
-
- picture_in_picture_lock_state OrientationLockState grid_lock_state OrientationLockState PROPERTY TYPE custom_id? string message string PROPERTY TYPE success boolean PROPERTY TYPE id string name string type SkuTypeObject price SkuPrice application_id string 
-
-#### ShareLinkRequest 
-
-#### ShareLinkResponse 
-
-#### Sku 
-
-
- "ags number release_date string | null PROPERTY TYPE amount number currency string PROPERTY TYPE sku_id string VALUE Entitlement[] | null PROPERTY TYPE start? number end? number 
-
-#### SkuPrice 
-
-#### StartPurchaseRequest 
-
-#### StartPurchaseResponse 
-
-#### Timestamp 
-
-
- PROPERTY TYPE id string username string discriminator string global_name? string | null avatar? string | null avatar_decoration_data AvatarDecorationData | null bot boolean "ags? number | null premium_type? number | null PROPERTY TYPE locale string PROPERTY TYPE 
-
-#### User 
-
-#### UserSettingsGetLocaleResponse 
-
-#### UserVoiceState 
-
-
- mute boolean nick string user User voice_state VoiceState volume number PROPERTY TYPE url? string | null height? number | null width? number | null PROPERTY TYPE mute boolean deaf boolean self_mute boolean self_deaf boolean suppress boolean 
-
-#### Video 
-
-#### VoiceState 
-
-
-## SDK Enums 
-
- NAME VALUE UNHANDLED -1 DM 1 GROUP_DM 3 GUILD_TEXT 0 GUILD_VOICE 2 GUILD_CATEGORY 4 GUILD_ANNOUNCEMENT 5 GUILD_STORE 6 ANNOUNCEMENT_THREAD 10 PUBLIC_THREAD 11 PRIVATE_THREAD 12 GUILD_STAGE_VOICE 13 
-
-#### ChannelTypesObject 
-
-
-###### GUILD_DIRECTORY 14 
-
-###### GUILD_FORUM 15 
-
- VALUE 'error' 'log' 'warn' 'debug' 'info' NAME VALUE UNHANDLED -1 UNLOCKED 1 PORTRAIT 2 LANDSCAPE 3 
-
-#### ConsoleLevel 
-
-#### OrientationLockStateTypeObject 
-
-#### ThermalStateTypeObject 
-
-
- NAME VALUE UNHANDLED -1 NOMINAL 0 FAIR 1 SERIOUS 2 CRITICAL 3 NAME VALUE UNHANDLED -1 PORTRAIT 0 LANDSCAPE 1 NAME VALUE UNHANDLED -1 FOCUSED 0 PIP 1 GRID 2 
-
-#### OrientationTypeObject 
-
-#### LayoutModeTypeObject 
-
-
- VALUE 'bot' 'rpc' 'identify' 'connections' 'email' 'guilds' 'guilds.join' 'guilds.members.read' 'gdm.join' 'messages.read' 'rpc.noti!cations.read' 'rpc.voice.write' 'rpc.voice.read' 'rpc.activities.write' 'webhook.incoming' 'applications.commands' 
-
-#### OAuthScopes 
-
-
- 'applications.builds.upload' 'applications.builds.read' 'applications.store.update' 'applications.entitlements' 'relationships.read' 'activities.read' 'activities.write' 'dm_channels.read' NAME CODE CLOSE_NORMAL 1000 CLOSE_UNSUPPORTED 1003 CLOSE_ABNORMAL 1006 INVALID_CLIENTID 4000 INVALID_ORIGIN 4001 RATELIMITED 4002 TOKEN_REVOKED 4003 
-
-#### RPCCloseCodes 
-
-
-###### INVALID_VERSION 4004 
-
-###### INVALID_ENCODING 4005 
-
- NAME VALUE UNHANDLED -1 APPLICATION 1 DLC 2 CONSUMABLE 3 BUNDLE 4 SUBSCRIPTION 5 VALU E NAME DESCRIPTION 0 None The user has no relationship with the other user. 1 Friend The user is friends with the other user. 2 Blocked The current user has blocked the target user. 
-
-#### SkuTypeObject 
-
-#### Relationship Types 
-
-
-3 Pending Incoming The current user has received a friend request from the target user, but it is not yet accepted. 4 Pending Outgoing The current user has sent a friend request to the target user, but it is not yet accepted. 5 Implicit The Implicit type is documented for visibility, but should be unused in the SDK. 6 Suggestion The Suggestion type is documented for visibility, but should be unused in the SDK. 
-
-
+# Embedded App SDK Reference
+
+The Embedded App SDK handles RPC calls between your application and Discord. It’s designed to help you build interactive Activities (games, social experiences, utilities). For tutorials and examples, see **Building an Activity** and the **Sample Projects**.
+
+---
+
+## Install the SDK
+
+The SDK is available via npm and GitHub. In your frontend JavaScript project:
+
+```bash
+npm install @discord/embedded-app-sdk
+```
+
+Then import and instantiate:
+
+```ts
+import { DiscordSDK } from "@discord/embedded-app-sdk";
+
+const discordSdk = new DiscordSDK(DISCORD_CLIENT_ID);
+
+async function setup() {
+  await discordSdk.ready(); // The rest of your app logic
+}
+```
+
+---
+
+## SDK Methods
+
+| Method        | Description                                                                |
+| ---           | ---                                                                        |
+| `ready()`     | Resolves when your app has successfully connected to the Discord client.   |
+| `subscribe()` | Subscribe to an Embedded App SDK event.                                    |
+| `unsubscribe()` | Unsubscribe from a previously subscribed SDK event.                      |
+| `close()`     | Close your app with a specified close code and optional reason.            |
+
+### `ready()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** None  
+- **Signature:** `ready(): Promise<void>`
+
+### `subscribe()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** Depends on the event (see each event’s requirements)  
+- **Signature:**
+  ```ts
+  subscribe<Event>(
+    event: Event,
+    listener: (data: EventPayloadData<Event>) => void,
+    ...subscribeArgs: Partial<EventPayloadData<Event>>
+  ): Promise<EventEmitter>
+  ```
+- **Usage:**
+  ```ts
+  await discordSdk.subscribe("SDK_EVENT_NAME", eventHandler, args);
+  ```
+
+### `unsubscribe()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** None  
+- **Signature:**
+  ```ts
+  unsubscribe<Event>(
+    event: Event,
+    listener: (data: EventPayloadData<Event>) => void,
+    ...subscribeArgs: Partial<EventPayloadData<Event>>
+  ): Promise<EventEmitter>
+  ```
+- **Usage:**
+  ```ts
+  await discordSdk.unsubscribe("SDK_EVENT_NAME", eventHandler, args);
+  ```
+
+### `close()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** None  
+- **Signature:** `close(code: RPCCloseCodes, message: string): void`  
+- **Usage:**
+  ```ts
+  discordSdk.close(RPCCloseCodes.CLOSE_NORMAL, "You exited from app");
+  ```
+
+---
+
+## SDK Commands
+
+All commands are accessed via `discordSdk.commands.*`.
+
+| Command | Description |
+| --- | --- |
+| `authenticate` | Authenticate an existing client with your app. |
+| `authorize` | Authorize a new client with your app. |
+| `captureLog` | Forward logs to your own logger. |
+| `encourageHardwareAcceleration` | Presents a modal allowing users to enable hardware acceleration. |
+| `getChannel` | Returns information about the provided channel ID. |
+| `getChannelPermissions` | Returns the current user’s permissions in the connected channel. |
+| `getEntitlements` | Returns a list of entitlements for the current user. |
+| `getInstanceConnectedParticipants` | Returns all participants connected to the current Activity instance. |
+| `getPlatformBehaviors` | Returns information about supported platform behaviors. |
+| `getRelationships` | Returns the current user’s relationships. *(Requires Discord approval)* |
+| `getSkus` | Returns a list of your app’s SKUs (priced SKUs only). |
+| `initiateImageUpload` | Opens Discord’s file upload flow. |
+| `openExternalLink` | Opens an external URL via Discord’s confirmation dialog. |
+| `openInviteDialog` | Opens Channel Invite UI without additional OAuth scopes. |
+| `openShareMomentDialog` | Opens a dialog to share a Discord CDN media URL. |
+| `setActivity` | Updates the user’s Rich Presence for your Activity. |
+| `setConfig` | Sets whether PIP (picture-in-picture) is interactive. |
+| `setOrientationLockState` | Locks orientation for focused / PIP / grid modes. |
+| `shareLink` | Presents a modal for the user to share a link (with optional message/custom_id). |
+| `startPurchase` | Launches the purchase flow for a given SKU ID. |
+| `userSettingsGetLocale` | Returns the current user’s locale. |
+
+### `authenticate()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** None  
+- **Signature:** `authenticate(args: AuthenticateRequest): Promise<AuthenticateResponse>`  
+- **Usage:**
+  ```ts
+  await discordSdk.commands.authenticate({ access_token: "ACCESS_TOKEN_STRING" });
+  ```
+
+### `authorize()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** None (command itself has no scopes; you *request* scopes here)  
+- **Signature:** `authorize(args: AuthorizeRequest): Promise<AuthorizeResponse>`  
+- **Usage:**
+  ```ts
+  await discordSdk.commands.authorize({
+    client_id: DISCORD_CLIENT_ID,
+    response_type: "code",
+    state: "",
+    prompt: "none",
+    scope: [
+      "identify",
+      "guilds",
+      // "guilds.members.read",
+      // "relationships.read",
+      // "rpc.activities.write",
+      // "dm_channels.read",
+      "applications.commands",
+    ],
+  });
+  ```
+
+### `captureLog()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** None  
+- **Signature:** `captureLog(args: CaptureLogRequest): Promise<void>`  
+- **Usage:**
+  ```ts
+  await discordSdk.commands.captureLog({ level: "log", message: "This is my log message!" });
+  ```
+
+### `encourageHardwareAcceleration()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** None  
+- **Signature:** `encourageHardwareAcceleration(): Promise<EncourageHardwareAccelerationResponse>`  
+- **Usage:**
+  ```ts
+  const { enabled } = await discordSdk.commands.encourageHardwareAcceleration();
+  console.log(`Hardware Acceleration is ${enabled === true ? "enabled" : "disabled"}`);
+  ```
+
+### `getChannel()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** `guilds` (guild channels); `guilds` & `dm_channels.read` (GDM; requires approval)  
+- **Signature:** `getChannel(args: GetChannelRequest): Promise<GetChannelResponse>`  
+- **Usage:**
+  ```ts
+  await discordSdk.commands.getChannel({ channel_id: discordSdk.channelId });
+  ```
+
+### `getChannelPermissions()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** `guilds.members.read`  
+- **Signature:** `getChannelPermissions(): Promise<GetChannelPermissionsResponse>`  
+- **Usage:**
+  ```ts
+  const { permissions } = await discordSdk.commands.getChannelPermissions();
+  ```
+
+### `getEntitlements()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** None  
+- **Signature:** `getEntitlements(): Promise<GetEntitlementsResponse>`  
+- **Usage:**
+  ```ts
+  const { entitlements } = await discordSdk.commands.getEntitlements();
+  ```
+
+### `getInstanceConnectedParticipants()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** None  
+- **Signature:** `getInstanceConnectedParticipants(): Promise<GetInstanceConnectedParticipantsResponse>`  
+- **Usage:**
+  ```ts
+  const { participants } = await discordSdk.commands.getInstanceConnectedParticipants();
+  ```
+
+### `getPlatformBehaviors()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** None  
+- **Signature:** `getPlatformBehaviors(): Promise<GetPlatformBehaviorsResponse>`  
+- **Usage:**
+  ```ts
+  const res = await discordSdk.commands.getPlatformBehaviors();
+  ```
+
+### `getRelationships()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** `relationships.read` *(requires Discord approval)*  
+- **Signature:** `getRelationships(): Promise<GetRelationshipsResponse>`  
+- **Usage:**
+  ```ts
+  const { relationships } = await discordSdk.commands.getRelationships();
+  ```
+
+### `getSkus()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** None  
+- **Signature:** `getSkus(): Promise<GetSkusResponse>`  
+- **Usage:**
+  ```ts
+  const { skus } = await discordSdk.commands.getSkus();
+  ```
+
+### `initiateImageUpload()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** None  
+- **Signature:** `initiateImageUpload(): Promise<InitiateImageUploadResponse>`  
+- **Usage:**
+  ```ts
+  const res = await discordSdk.commands.initiateImageUpload();
+  ```
+
+### `openExternalLink()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** None  
+- **Signature:** `openExternalLink(args: OpenExternalLinkRequest): Promise<OpenExternalLinkResponse>`  
+- **Usage:**
+  ```ts
+  const { opened } = await discordSdk.commands.openExternalLink({ url: "https://example.com" });
+  ```
+
+### `openInviteDialog()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** None  
+- **Signature:** `openInviteDialog(): Promise<void>`  
+- **Usage:**
+  ```ts
+  await discordSdk.commands.openInviteDialog();
+  ```
+
+### `openShareMomentDialog()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** None (but you must pass a **Discord CDN** `mediaUrl`)  
+- **Signature:** `openShareMomentDialog(args: OpenShareMomentDialogRequest): Promise<void>`  
+- **Usage:**
+  ```ts
+  await discordSdk.commands.openShareMomentDialog({ mediaUrl: "https://cdn.discordapp.com/attachments/..." });
+  ```
+
+### `setActivity()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** `rpc.activities.write`  
+- **Signature:** `setActivity(args: SetActivityRequest): Promise<Activity>`  
+- **Usage:**
+  ```ts
+  await discordSdk.commands.setActivity({
+    activity: {
+      type: 0,
+      details: "Traveling with a group",
+      state: "In Mainframe",
+      assets: {
+        large_image: "main-game-image",
+        large_text: "in a group",
+        small_image: "map-mainframe",
+        small_text: "in mainframe",
+      },
+      timestamps: { start: 1723137832 },
+      party: { size: [2, 4] },
+    },
+  });
+  ```
+
+### `setConfig()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** None  
+- **Signature:** `setConfig(args: SetConfigRequest): Promise<SetConfigResponse>`  
+- **Usage:**
+  ```ts
+  await discordSdk.commands.setConfig({ use_interactive_pip: true });
+  ```
+
+### `setOrientationLockState()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** None  
+- **Signature:** `setOrientationLockState(args: SetOrientationLockStateRequest): Promise<void>`  
+- **Usage:**
+  ```ts
+  import { Common } from "@discord/embedded-app-sdk";
+
+  await discordSdk.commands.setOrientationLockState({
+    lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE,
+    picture_in_picture_lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE,
+    grid_lock_state: Common.OrientationLockStateTypeObject.UNLOCKED,
+  });
+  ```
+
+### `shareLink()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** None  
+- **Signature:** `shareLink(args: ShareLinkRequest): Promise<ShareLinkResponse>`  
+- **Usage:**
+  ```ts
+  const { success } = await discordSdk.commands.shareLink({
+    message: "This message is shared alongside the link!",
+    custom_id: "some_custom_id",
+  });
+  console.log(success ? "User shared link!" : "User did not share link.");
+  ```
+
+### `startPurchase()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** None  
+- **Signature:** `startPurchase(args: StartPurchaseRequest): Promise<StartPurchaseResponse>`  
+- **Usage:**
+  ```ts
+  await discordSdk.commands.startPurchase({ sku_id: skuId });
+  ```
+
+### `userSettingsGetLocale()`
+- **Platforms:** Web, iOS, Android  
+- **Scopes:** `identify`  
+- **Signature:** `userSettingsGetLocale(): Promise<UserSettingsGetLocaleResponse>`  
+- **Usage:**
+  ```ts
+  const { locale } = await discordSdk.commands.userSettingsGetLocale();
+  ```
+
+---
+
+## SDK Events
+
+Use `subscribe()` to listen to these events.
+
+| Event | Description | Scopes |
+| --- | --- | --- |
+| `READY` | Sent immediately after connecting; includes server info. | None |
+| `ERROR` | Sent when there is an error (including command errors). | None |
+| `VOICE_STATE_UPDATE` | Voice state changes (mute, volume, etc.) in a subscribed voice channel. | `rpc.voice.read` |
+| `SPEAKING_START` | A user in a subscribed voice channel starts speaking. | `rpc.voice.read` |
+| `SPEAKING_STOP` | A user in a subscribed voice channel stops speaking. | `rpc.voice.read` |
+| `ACTIVITY_LAYOUT_MODE_UPDATE` | User changed layout mode (focused, PIP, grid). | None |
+| `ORIENTATION_UPDATE` | Screen orientation changed. | None |
+| `CURRENT_USER_UPDATE` | Current user object changed. | `identify` |
+| `CURRENT_GUILD_MEMBER_UPDATE` | Current guild member object changed. | `identify`, `guilds.members.read` |
+| `THERMAL_STATE_UPDATE` | Thermal state surfaced on Android/iOS. | None |
+| `ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE` | Instance participants changed. | None |
+| `RELATIONSHIP_UPDATE` | A relationship of the current user updated. | `relationships.read` *(approval)* |
+| `ENTITLEMENT_CREATE` | (Coming soon) Entitlement created for a SKU. | — |
+
+**Sample Payloads**
+
+`READY`
+```json
+{
+  "v": 1,
+  "config": {
+    "cdn_host": "cdn.discordapp.com",
+    "api_endpoint": "//discord.com/api",
+    "environment": "production"
+  }
+}
+```
+
+`ERROR`
+```json
+{ "code": 4006, "message": "Not authenticated or invalid scope" }
+```
+
+`ACTIVITY_LAYOUT_MODE_UPDATE`
+```json
+{ "layout_mode": 1 }
+```
+
+`ORIENTATION_UPDATE`
+```json
+{ "screen_orientation": 1 }
+```
+
+`THERMAL_STATE_UPDATE`
+```json
+{ "thermal_state": 0 }
+```
+
+---
+
+## SDK Interfaces (Selected)
+
+> This section lists commonly used shapes. Field presence may vary by context.
+
+### `Activity` (partial used by `setActivity`)
+```ts
+interface Activity {
+  name: string;
+  type: number;
+  url?: string | null;
+  created_at?: number | null;
+  timestamps?: Timestamp | null;
+  application_id?: string | null;
+  details?: string | null;
+  details_url?: string | null;
+  state?: string | null;
+  state_url?: string | null;
+  emoji?: Emoji | null;
+  party?: Party | null;
+  assets?: Assets | null;
+  secrets?: Secrets | null;
+  instance?: boolean | null;
+  flags?: number | null;
+}
+```
+
+### `Assets`
+```ts
+interface Assets {
+  large_image?: string | null;
+  large_text?: string | null;
+  large_url?: string | null;
+  small_image?: string | null;
+  small_text?: string | null;
+  small_url?: string | null;
+}
+```
+
+### `AuthenticateRequest` / `AuthenticateResponse`
+```ts
+interface AuthenticateRequest { access_token?: string | null; }
+interface AuthenticateResponse {
+  access_token: string;
+  user: User;
+  scopes: string[];
+  expires: string;
+  application: Application;
+}
+```
+
+### `AuthorizeRequest` / `AuthorizeResponse`
+```ts
+interface AuthorizeRequest {
+  client_id: string;
+  scope: OAuthScopes[];
+  response_type?: "code";
+  state?: string;
+  prompt?: "none";
+  code_challenge?: string;
+  code_challenge_method?: "S256";
+}
+interface AuthorizeResponse { code: string; }
+```
+
+### `OpenExternalLinkRequest` / `OpenExternalLinkResponse`
+```ts
+interface OpenExternalLinkRequest { url: string; }
+interface OpenExternalLinkResponse { opened: boolean | null; } // null on clients before Dec 2024
+```
+
+### `OpenShareMomentDialogRequest`
+```ts
+interface OpenShareMomentDialogRequest {
+  mediaUrl: string; // must be a Discord CDN URL
+}
+```
+
+### `SetActivityRequest`
+```ts
+interface SetActivityRequest { activity: Activity; }
+```
+
+### `SetConfigRequest` / `SetConfigResponse`
+```ts
+interface SetConfigRequest { use_interactive_pip: boolean; }
+interface SetConfigResponse { use_interactive_pip: boolean; }
+```
+
+### `SetOrientationLockStateRequest`
+```ts
+type OrientationLockState =
+  | Common.OrientationLockStateTypeObject.UNLOCKED
+  | Common.OrientationLockStateTypeObject.PORTRAIT
+  | Common.OrientationLockStateTypeObject.LANDSCAPE;
+
+interface SetOrientationLockStateRequest {
+  lock_state: OrientationLockState;
+  picture_in_picture_lock_state: OrientationLockState;
+  grid_lock_state: OrientationLockState;
+}
+```
+
+### `ShareLinkRequest` / `ShareLinkResponse`
+```ts
+interface ShareLinkRequest {
+  message: string;
+  custom_id?: string;
+}
+interface ShareLinkResponse { success: boolean; }
+```
+
+### `StartPurchaseRequest` / `StartPurchaseResponse`
+```ts
+interface StartPurchaseRequest { sku_id: string; }
+interface StartPurchaseResponse { /* platform-provided result */ }
+```
+
+### `User` (partial)
+```ts
+interface User {
+  id: string;
+  username: string;
+  discriminator: string;
+  global_name?: string | null;
+  avatar?: string | null;
+  avatar_decoration_data?: AvatarDecorationData | null;
+  bot: boolean;
+  flags?: number | null;
+  premium_type?: number | null;
+}
+```
+
+---
+
+## SDK Enums (Selected)
+
+### `ChannelTypesObject`
+```
+DM=1, GROUP_DM=3, GUILD_TEXT=0, GUILD_VOICE=2, GUILD_CATEGORY=4, GUILD_ANNOUNCEMENT=5,
+ANNOUNCEMENT_THREAD=10, PUBLIC_THREAD=11, PRIVATE_THREAD=12, GUILD_STAGE_VOICE=13,
+GUILD_DIRECTORY=14, GUILD_FORUM=15
+```
+
+### `ConsoleLevel`
+```
+"error" | "log" | "warn" | "debug" | "info"
+```
+
+### `OrientationLockStateTypeObject`
+```
+UNHANDLED=-1, UNLOCKED=1, PORTRAIT=2, LANDSCAPE=3
+```
+
+### `ThermalStateTypeObject`
+```
+UNHANDLED=-1, NOMINAL=0, FAIR=1, SERIOUS=2, CRITICAL=3
+```
+
+### `OrientationTypeObject`
+```
+UNHANDLED=-1, PORTRAIT=0, LANDSCAPE=1
+```
+
+### `LayoutModeTypeObject`
+```
+UNHANDLED=-1, FOCUSED=0, PIP=1, GRID=2
+```
+
+### `OAuthScopes` (not exhaustive)
+```
+"bot", "rpc", "identify", "connections", "email", "guilds", "guilds.join",
+"guilds.members.read", "gdm.join", "messages.read", "rpc.notifications.read",
+"rpc.voice.write", "rpc.voice.read", "rpc.activities.write", "webhook.incoming",
+"applications.commands", "applications.builds.upload", "applications.builds.read",
+"applications.store.update", "applications.entitlements", "relationships.read",
+"activities.read", "activities.write", "dm_channels.read"
+```
+
+### `RPCCloseCodes`
+```
+CLOSE_NORMAL=1000, CLOSE_UNSUPPORTED=1003, CLOSE_ABNORMAL=1006,
+INVALID_CLIENTID=4000, INVALID_ORIGIN=4001, RATELIMITED=4002, TOKEN_REVOKED=4003,
+INVALID_VERSION=4004, INVALID_ENCODING=4005
+```
+
+### `SkuTypeObject`
+```
+APPLICATION=1, DLC=2, CONSUMABLE=3, BUNDLE=4, SUBSCRIPTION=5
+```
+
+### Relationship Types
+```
+0=None, 1=Friend, 2=Blocked, 3=Pending Incoming, 4=Pending Outgoing, 5=Implicit, 6=Suggestion
+```
+
+---
+
+> **Notes**
+> - Some features (e.g., `relationships.read`, `dm_channels.read`) require Discord approval.
+> - Older Discord clients may not support newer commands/events; handle `RPCErrorCodes.INVALID_COMMAND` where appropriate.
+> - Payload shapes are simplified for clarity; refer to the official type definitions for exhaustive fields.
