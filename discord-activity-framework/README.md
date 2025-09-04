@@ -26,7 +26,7 @@ A comprehensive, production-ready framework for building Discord Activities with
 
 ```bash
 # Clone the framework
-git clone <your-repo-url> discord-activity-framework
+git clone https://github.com/joshuahamsa/discord-activities.git
 cd discord-activity-framework
 
 # Install all dependencies
