@@ -1,6 +1,6 @@
 # Discord Activities Collection
 
-A comprehensive collection of Discord Activity examples, documentation, and a production-ready framework for building Discord Activities.
+A comprehensive collection of Discord Activity documentation and a production-ready framework for building Discord Activities.
 
 ## 📚 What's Included
 
@@ -26,21 +26,12 @@ Comprehensive Discord Activity documentation covering:
 
 **Location**: `ActivityDocs/`
 
-### 🎮 Example Activities
-Ready-to-use Discord Activity examples:
-- **Basic Activity Template** - Simple starting point
-- **Getting Started Activity** - Official Discord example
-- **Svelte Activity** - Modern framework example
-- **Custom Activity** - Advanced implementation
-
-**Location**: `discord-activity/`, `getting-started-activity/`, `sveltkordity/`
-
 ## 🚀 Quick Start
 
 ### Option 1: Use the Framework (Recommended)
 ```bash
 # Clone this repository
-git clone <your-repo-url> discord-activities
+git clone https://github.com/joshuahamsa/discord-activities.git
 cd discord-activities
 
 # Navigate to the framework
@@ -48,20 +39,6 @@ cd discord-activity-framework
 
 # Follow the framework README for setup
 cat README.md
-```
-
-### Option 2: Explore Examples
-```bash
-# Clone this repository
-git clone <your-repo-url> discord-activities
-cd discord-activities
-
-# Explore any example project
-cd getting-started-activity
-# or
-cd sveltkordity
-# or
-cd discord-activity
 ```
 
 ## 📋 Prerequisites
@@ -114,9 +91,6 @@ DiscordActivities/
 │   ├── Embedded App SDK Reference.md
 │   ├── Production Readiness Activity Development Guides.md
 │   └── ... (20+ documentation files)
-├── getting-started-activity/     # 🎮 Official Discord Example
-├── sveltkordity/                # 🎮 Svelte Framework Example
-├── discord-activity/            # 🎮 Custom Activity Example
 └── README.md                    # This file
 ```
 
@@ -164,29 +138,6 @@ The `ActivityDocs/` folder contains complete Discord documentation:
 - **Embedded App SDK Reference** - Complete API documentation
 - **Best Practices** - Performance and security guidelines
 
-## 🔧 Example Activities
-
-### Getting Started Activity
-Official Discord example with basic functionality:
-- Discord SDK integration
-- User authentication
-- Channel and guild information
-- Rich presence updates
-
-### Svelte Activity
-Modern framework implementation:
-- SvelteKit integration
-- TypeScript support
-- Advanced UI components
-- Real-time features
-
-### Custom Activity
-Advanced implementation example:
-- Complex game logic
-- Multiplayer features
-- Custom UI components
-- Production deployment
-
 ## 🚀 Deployment
 
 ### Development
@@ -230,10 +181,9 @@ This project is licensed under the MIT License - see the [LICENSE](discord-activ
 ## 🎉 What's Next?
 
 1. **Start with the Framework** - Use `discord-activity-framework/` for new projects
-2. **Explore Examples** - Study the example Activities for patterns
-3. **Read Documentation** - Dive into `ActivityDocs/` for deep understanding
-4. **Build Your Activity** - Create something amazing!
-5. **Share with Community** - Contribute back to help others
+2. **Read Documentation** - Dive into `ActivityDocs/` for deep understanding
+3. **Build Your Activity** - Create something amazing!
+4. **Share with Community** - Contribute back to help others
 
 ---
 

@@ -1,7 +1,5 @@
 # Example Discord Activities (excluded from main repo)
-discord-activity/
-getting-started-activity/
-sveltkordity/
+Activity-Examples/
 
 # Environment files
 .env
