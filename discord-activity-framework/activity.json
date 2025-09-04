@@ -1,0 +1,24 @@
+{
+  "name": "Discord Activity Framework",
+  "type": "ACTIVITY",
+  "description": "A comprehensive framework for building Discord Activities with rich presence and interactive features",
+  "application_id": "YOUR_APPLICATION_ID_HERE",
+  "supported_platforms": ["desktop", "mobile"],
+  "supported_locales": ["en-US"],
+  "launch_url": "https://your-domain.com/",
+  "activity_party": {
+    "id": "discord-activity-framework",
+    "size": [1, 10]
+  },
+  "assets": {
+    "large_image": "https://discord.com/assets/847541504914fd33810e70a0ea73177e.ico",
+    "large_text": "Discord Activity Framework",
+    "small_image": "https://discord.com/assets/847541504914fd33810e70a0ea73177e.ico",
+    "small_text": "Framework"
+  },
+  "timestamps": {
+    "start": null
+  },
+  "state": "Building Activities",
+  "details": "Using the Discord Activity Framework"
+}

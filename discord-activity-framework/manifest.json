@@ -1,0 +1,75 @@
+{
+  "name": "Discord Activity Framework",
+  "version": "1.0.0",
+  "description": "A comprehensive framework for building Discord Activities with rich presence, authentication, and interactive features",
+  "author": "Your Name",
+  "license": "MIT",
+  "main": "client/index.html",
+  "slug": "discord-activity-framework",
+  "scripts": {
+    "start": "npm run dev",
+    "build": "npm run build:client",
+    "build:client": "cd client && npm run build"
+  },
+  "discord": {
+    "activity": {
+      "name": "Discord Activity Framework",
+      "type": "ACTIVITY",
+      "description": "A comprehensive framework for building Discord Activities with rich presence and interactive features",
+      "supported_platforms": ["desktop", "mobile"],
+      "supported_locales": ["en-US"],
+      "launch_url": "https://your-domain.com/",
+      "activity_party": {
+        "id": "discord-activity-framework",
+        "size": [1, 10]
+      },
+      "assets": {
+        "large_image": "https://discord.com/assets/847541504914fd33810e70a0ea73177e.ico",
+        "large_text": "Discord Activity Framework",
+        "small_image": "https://discord.com/assets/847541504914fd33810e70a0ea73177e.ico",
+        "small_text": "Framework"
+      }
+    }
+  },
+  "permissions": [
+    "ACTIVITY_READ",
+    "ACTIVITY_WRITE",
+    "IDENTIFY",
+    "GUILDS",
+    "APPLICATIONS_COMMANDS",
+    "RPC_ACTIVITIES_WRITE"
+  ],
+  "dependencies": {
+    "@discord/embedded-app-sdk": "^1.9.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.1",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "vite": "^5.0.8",
+    "concurrently": "^8.2.2",
+    "cloudflared": "^0.6.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "discord",
+    "activity",
+    "framework",
+    "sdk",
+    "embedded-app",
+    "rich-presence",
+    "oauth",
+    "authentication"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/discord-activity-framework.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/discord-activity-framework/issues"
+  },
+  "homepage": "https://github.com/yourusername/discord-activity-framework#readme"
+}
