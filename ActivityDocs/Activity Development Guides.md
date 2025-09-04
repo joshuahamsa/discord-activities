@@ -1,48 +1,125 @@
-**On this page** Setting Up Activity Metadata Setting Up Activity Art Assets Embedded Background Cover Art App Tile Video Preview **QUICK START INTERACTIONS COMPONENTS ACTIVITIES** API Reference Overview of Apps Getting Started Overview Receiving and Responding Application Commands Overview Using Message Components Using Modal Components Component Reference Home > Activities > Development Guides > Assets and Metadata 
+# Assets and Metadata
 
-# Assets and 
+## Setting Up Activity Metadata
 
-# Metadata 
+The Activity Shelf is where users can see what Activities can be played. It has various metadata and art assets that can be configured. To update your app's metadata in the Discord Developer Portal, navigate to the Settings -> General Information tab of your app.
 
-## Setting Up Activity Metadata 
+- **Application Name**: The publicly visible name of your app.
+- **Application Icon**: The publicly visible icon for your app.
+- **Application Description**: The application description is shown in the view of the Activity Shelf Item.
+- **Max Participants**: The max participants indicate the maximum number of players for your application. Max Participants is displayed above the name in the 1-up view: "Up to X participants". Leaving this field empty defaults to "Unlimited participants". Max Participants is also displayed under the name in the 2-up view.
 
- The Activity Shelf is where users can see what Activities can be played. It has various metadata and art assets that can be con!gured. To update your app's metadata in the Discord Developer Portal, navigate to the Settings -> General Information tab of your app. Application Name: The publicly visible name of your app. Application Icon: The publicly visible icon for your Search ⌘ K 
+An app can have a different application name and avatar from the application's bot username and avatar. Both sets of metadata are public-facing and may be visible in various situations when a user interacts with your app. You can view your bot's username on the Settings -> Bot tab. 
 
+## Setting Up Activity Art Assets
 
-Overview How Activities Work Quickstart Development Guides Local Development User Actions Mobile Layout Networking Multiplayer app. **Application Description:** The application description is shown in the view of the Activity Shelf Item. **Max Participants:** The max participants indicate the maximum number of players for your application. Max Participants is displayed above the name in the 1-up view: Up to X participants. Leaving this !eld empty defaults to Unlimited participants. Max Participants is also displayed under the name in the 2-up view. An app can have a different application name and avatar from the application's bot username and avatar. Both sets of metadata are public-facing and may be visible in various situations when a user interacts with your app. You can view your bot's username on the Settings -> Bot tab. 
+The Activity Shelf is where users can see what Activities can be played. It has various metadata and art assets that can be configured. To update your app's embedded-specific art assets in the Discord Developer Portal, navigate to the Activities -> Art Assets tab of your app.
 
-## Setting Up Activity Art Assets 
+## Embedded Background# Assets and Metadata
 
- The Activity Shelf is where users can see what Activities can be played. It has various metadata and art assets that 
+## Table of Contents
+- [Setting Up Activity Metadata](#setting-up-activity-metadata)
+- [Setting Up Activity Art Assets](#setting-up-activity-art-assets)
+  - [Embedded Background](#embedded-background)
+  - [Cover Art](#cover-art)
+  - [App Tile](#app-tile)
+  - [Video Preview](#video-preview)
 
+---
 
-can be con!gured. To update your app's embedded-speci!c art assets in the Discord Developer Portal, navigate to the Activities -> Art Assets tab of your app. 
+## Setting Up Activity Metadata
 
-## Embedded Background 
+The **Activity Shelf** is where users can see what Activities can be played. It has various metadata and art assets that can be configured.  
 
-Used as a background overlay in Grid view. Artwork should be clustered around the edges of the image leaving space in the center of the image so the UI does not clash with it. 16:9 aspect ratio At least 1024 pixels wide 
+To update your app’s metadata in the Discord Developer Portal, navigate to:  
+**Settings → General Information** tab of your app.
 
-## Cover Art 
+- **Application Name**: The publicly visible name of your app.  
+- **Application Icon**: The publicly visible icon for your app.  
+- **Application Description**: Shown in the view of the Activity Shelf item.  
+- **Max Participants**:  
+  - Indicates the maximum number of players for your app.  
+  - Displayed above the name in the 1-up view as “Up to X participants.”  
+  - Leaving this field empty defaults to “Unlimited participants.”  
+  - Also displayed under the name in the 2-up view.  
 
-Used as the main image in the Activity Shelf. It is suggested that this image contain the title and some art in the background. 
+⚠️ Note: An app can have a different **application name and avatar** from the bot’s **username and avatar**. Both sets of metadata are public-facing and may appear in different contexts when users interact with your app.  
 
-### Speci!cations 
+You can view your bot’s username under: **Settings → Bot** tab.
 
-### Speci!cations: 
+---
 
+## Setting Up Activity Art Assets
 
- Image can be displayed at both 16:9 and 13:11 aspect ratios At least 1024 pixels wide 
+The **Activity Shelf** also uses embedded-specific art assets.  
 
-## App Tile 
+To update your app’s Activity art assets in the Discord Developer Portal, navigate to:  
+**Activities → Art Assets** tab of your app.
 
-There are two views of an application tile. The regular size tile (2-up tile) and the larger "featured" application tile (1up tile). 
+---
 
-## Video Preview 
+### Embedded Background
+Used as a background overlay in **Grid view**.  
 
-Hovering over the cover image should start playing a preview video of the Application. The preview videos should be no more than 10 seconds long. If no video is provided, nothing will happen as you hover over the application. 
+Artwork should be clustered around the edges, leaving space in the center to avoid UI clashes.
 
-### Speci!cations: 640 x 360, mp4 format, under 10 
+**Specifications:**
+- 16:9 aspect ratio  
+- At least 1024 pixels wide  
 
-### seconds long, under 1 MB in size 
+---
+
+### Cover Art
+Used as the **main image** in the Activity Shelf. Suggested to include the **title** and background artwork.  
+
+**Specifications:**
+- Supports both **16:9** and **13:11** aspect ratios  
+- At least 1024 pixels wide  
+
+---
+
+### App Tile
+Two display types:
+- **Regular size (2-up tile)**  
+- **Featured size (1-up tile)**  
+
+---
+
+### Video Preview
+Hovering over the cover image can play a short preview video of the app.  
+If no video is provided, nothing will happen on hover.  
+
+**Specifications:**
+- 640 × 360 pixels  
+- MP4 format  
+- Under 10 seconds long  
+- Under 1 MB in size
+
+Used as a background overlay in Grid view. Artwork should be clustered around the edges of the image leaving space in the center of the image so the UI does not clash with it.
+
+**Specifications:**
+- 16:9 aspect ratio
+- At least 1024 pixels wide
+
+## Cover Art
+
+Used as the main image in the Activity Shelf. It is suggested that this image contain the title and some art in the background.
+
+**Specifications:**
+- Image can be displayed at both 16:9 and 13:11 aspect ratios
+- At least 1024 pixels wide
+
+## App Tile
+
+There are two views of an application tile. The regular size tile (2-up tile) and the larger "featured" application tile (1-up tile).
+
+## Video Preview
+
+Hovering over the cover image should start playing a preview video of the Application. The preview videos should be no more than 10 seconds long. If no video is provided, nothing will happen as you hover over the application.
+
+**Specifications:**
+- 640 x 360, mp4 format
+- Under 10 seconds long
+- Under 1 MB in size 
 
 

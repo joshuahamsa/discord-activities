@@ -1,57 +1,115 @@
-**On this page** How should you think about the data you show? Tips Launch Checklist **ACTIVITIES** Component Reference Overview How Activities Work Quickstart Development Guides Local Development User Actions Mobile Layout Networking Multiplayer Experience Growth and Referrals Assets and Metadata Production Readiness Design Patterns 
+# Best Practices for Rich Presence
 
-# Best Practices for 
+Rich Presence lets you display actionable data in a Discord user’s profile about what they’re up to in your game or app.  
 
-# Rich Presence 
+This guide shows best practices for making that data as effective as possible.  
+If you don’t already know about Rich Presence, read the **overview** first.
 
- Rich Presence lets you display actionable data in a Discord user's pro!le about what they're up to in your game or app. This guide is intended to show some best practices on how to make that data the best it can be. If you don't already know about Rich Presence, read the overview !rst. 
+---
 
-## How should you think about the 
+## Table of Contents
+- [How Should You Think About the Data You Show?](#how-should-you-think-about-the-data-you-show)
+- [Tips](#tips)
+  - [Keep It Short](#keep-it-short)
+  - [Make It Actionable](#make-it-actionable)
+  - [Use All of the Fields](#use-all-of-the-fields)
+  - [Have Interesting, Expressive Art](#have-interesting-expressive-art)
+- [Launch Checklist](#launch-checklist)
+  - [Profile Strings](#profile-strings)
+  - [Artwork](#artwork)
+  - [Joining](#joining)
 
-## data you show? 
+---
 
- The data in your players’ pro!les is the !rst thing that others on Discord will see about your game or app, both those familiar with it and those who have never seen it before. It should answer whether someone can play with their friend right now and show data like: Search ⌘ K 
+## How Should You Think About the Data You Show?
 
+The data in players’ profiles is the **first impression** others on Discord will get of your game or app — whether they’re familiar with it or not.  
 
-**DISCORD SOCIAL SDK RICH PRESENCE** Overview Core Concepts Getting Started Development Guides Design Guidelines How To Social SDK Reference What the player is currently doing How much time has elapsed or remains (if applicable) Their party state Your cool artwork! 
+It should answer the question: *Can I play with my friend right now?*  
 
-## Tips 
+Show data like:
+- What the player is currently doing  
+- How much time has elapsed or remains (if applicable)  
+- Their party state  
+- Your cool artwork!  
 
-### Keep it Short 
+---
 
- details and state should be snippets of data, not sentences. Make sure your strings stay on one line—especially on the small pro!le! Examples 
+## Tips
 
-### Make it Actionable! 
+### Keep It Short
+Details and state should be **snippets**, not sentences.  
+Strings should fit on one line — especially in the small profile view.  
 
+**Examples:**
+- ✅ `Playing Ranked`  
+- ❌ `Currently playing a ranked match in the competitive playlist`
 
-### Make it Actionable! 
+---
 
-Always keep party size data up to date. Keep accurate track of party state: In Queue, In Game, In Menus, etc. Include game modes, ranked vs. unranked, etc. so others can clearly see. **Examples** 
+### Make It Actionable
+Keep **party size data** up to date. Track party state accurately (In Queue, In Game, In Menus). Include game mode details so others clearly understand.  
 
-### Use ALL of the !elds (where applicable)! 
+**Examples:**
+- ✅ `In Queue (2/4)`  
+- ✅ `Playing Ranked - Dust 2`
 
-Make use of all the !elds that are applicable to you. Save space by putting map and character names in the tooltips. Try not to repeat information. **Examples** 
+---
 
+### Use All of the Fields
+Make use of every applicable field. Save space by putting map/character names in tooltips, and avoid repeating info.  
 
-### Have interesting, expressive art! 
+**Examples:**
+- `details` → Current activity  
+- `state` → Additional context  
+- `large_image` → Consistent branding  
+- `small_image` → Player-specific info  
 
-The large image should be consistent for all players in a party. The small image is where you can customize on a perplayer basis. Use high resolution artwork so your art looks great on fancy, high DPI screens. We strongly recommend image sizes of 1024x1024 pixels. **Examples** 
+---
 
+### Have Interesting, Expressive Art
+- Large image → Should be consistent across all party members  
+- Small image → Can be customized per player  
 
-## Launch Checklist 
+Use **high-resolution artwork** so it looks great on high-DPI screens. Recommended size: **1024×1024 pixels**.  
 
-Ready to launch a Rich Presence integration for your game? If so, we recommend looking over this checklist one last time to ensure that your integration is as great as it can be! Have you made use of all available !elds where appropriate? Do your strings !t on their own lines without line wrapping? Did you check on the smaller pro!le pop out? Do they clearly communicate: What the player is currently doing? If the player is in a group or playing alone? If the player is in a state where they can party up? 
+**Examples:**
+- Large image: Game logo or current map  
+- Small image: Character portrait or rank icon  
 
-#### Pro!le Strings 
+---
 
+## Launch Checklist
 
- Is your artwork high resolution? Are your images at least 1024x1024 pixels? Is it clean, interesting, and descriptive without being too highly detailed? Do you have artwork for every different state? Don't forget your default state/main menu! Did you make use of tooltips and the small image where appropriate? Since all Activities presence data has an Ask to Join button, Join Invites are only applicable when building with the Game SDK Have you successfully implemented join invites for your game if applicable? Does the state of the invite properly represent the party/group in-game with regards to: Size? Open slots? Discord and non-Discord users in the party? Are you able to post invites to Discord without any 
+Before launching a Rich Presence integration, review this checklist to ensure everything is polished.
 
-#### Artwork 
+### Profile Strings
+- Have you made use of all available fields?  
+- Do your strings fit without line wrapping?  
+- Did you check small profile pop-out?  
+- Do they clearly communicate:
+  - What the player is doing?  
+  - If they’re solo or grouped?  
+  - If they can party up?  
 
-#### Joining 
+---
 
+### Artwork
+- Is artwork high resolution (≥1024×1024)?  
+- Is it clean, interesting, and not overly detailed?  
+- Do you have artwork for every state (including default/menu)?  
+- Did you use tooltips and small images appropriately?  
 
-additional in-game setup or con!guration? Are you properly removing data from the presence payload when someone can no longer send invites? A Join secret should not be sent if the player can't invite anyone! 
+---
 
+### Joining
+> Applicable when building with the **Game SDK** (Activities presence data already has an Ask to Join button).  
 
+- Have you implemented join invites (if applicable)?  
+- Does invite state represent:
+  - Party size?  
+  - Open slots?  
+  - Discord vs. non-Discord members?  
+- Can you post invites to Discord without extra in-game setup?  
+- Do you remove presence payload data when invites are no longer possible?  
+  - ⚠️ A Join secret should **not** be sent if the player can’t invite anyone!  

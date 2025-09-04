@@ -1,65 +1,166 @@
-**On this page** Discord Developers Libraries Interactions OpenAPI Speci!cation Permission Calculators Intent Calculators Embed Visualizers API Types Game SDK Tools **MONETIZATION DISCOVERY** Using with the Embedded App SDK Using with the Discord Social SDK Using with the Game SDK **LEGACY** Best Practices Overview Enabling Monetization Managing SKUs Implementing App Subscriptions Implementing OneTime Purchases Implementing IAP for Activities Overview 
+# Community Resources
 
-# Community 
+Our community members create amazing tools and resources that help developers build and maintain their apps.  
 
-# Resources 
+From permissions calculators and embed visualizers to comprehensive libraries for interfacing with our API, the community has built a wealth of resources to make your development process smoother and more efficient.
 
- Our community members create amazing tools and resources that help developers build and maintain their apps. From permissions calculators and embed visualizers to comprehensive libraries for interfacing with our API, our community has built a wealth of resources to make your development process smoother and more ef!cient. 
+---
 
-## Discord Developers 
+## Table of Contents
+- [Discord Developers](#discord-developers)
+- [Libraries](#libraries)
+- [Interactions](#interactions)
+- [OpenAPI Specification](#openapi-specification)
+- [Permission Calculators](#permission-calculators)
+- [Intent Calculators](#intent-calculators)
+- [Embed Visualizers](#embed-visualizers)
+- [API Types](#api-types)
+- [Game SDK Tools](#game-sdk-tools)
 
- The Of!cial Discord Developers server is a developer ran, but community driven, support hub. If you need help with developing something on Discord or want of!cial updates from the developers, this is the place to be. 
+---
 
-## Libraries 
+## Discord Developers
 
- Search ⌘ K 
+The **Official Discord Developers server** is a developer-run but community-driven support hub.  
 
+If you need help developing something on Discord or want official updates from the developers, this is the place to be.
 
-**EVENTS DEVELOPER TOOLS** Enabling Discovery Best Practices Overview Using Gateway Gateway Events Webhook Events Embedded App SDK 
+---
 
-## Libraries 
+## Libraries
 
- Discord does not maintain of!cial SDKs. The following table is an inexhaustive list of third-party libraries that have valid rate limit implementations, are recently maintained, and have large communities of active bots. Discord Libraries NAME LANGUAGE Concord C Discord.Net C# DSharpPlus C# D++ C++ discljord Clojure DiscordGo Go Discord4J Java JDA Java discord.js JavaScript Eris JavaScript Oceanic JavaScript 
+Discord does not maintain official SDKs.  
 
+The following is an **inexhaustive list of third-party libraries** that:
+- Implement valid rate limits
+- Are recently maintained
+- Have large, active communities
 
- Discordia Lua DiscordPHP PHP discord.py Python disnake Python hikari Python interactions.py Python nextcord Python pycord Python discordrb Ruby Serenity Rust 
+**Discord Libraries**
 
-## Interactions 
+| Name           | Language    |
+|----------------|-------------|
+| Concord        | C           |
+| Discord.Net    | C#          |
+| DSharpPlus     | C#          |
+| D++            | C++         |
+| discljord      | Clojure     |
+| DiscordGo      | Go          |
+| Discord4J      | Java        |
+| JDA            | Java        |
+| discord.js     | JavaScript  |
+| Eris           | JavaScript  |
+| Oceanic        | JavaScript  |
+| Discordia      | Lua         |
+| DiscordPHP     | PHP         |
+| discord.py     | Python      |
+| disnake        | Python      |
+| hikari         | Python      |
+| interactions.py| Python      |
+| nextcord       | Python      |
+| pycord         | Python      |
+| discordrb      | Ruby        |
+| Serenity       | Rust        |
 
-Interactions are the great, new way of making a Discord bot. The following open-source libraries provide help for the security and authentication checks that are mandatory if you are receiving Interactions via outgoing webhook. They also include some types for the Interactions data models. C# 
+---
 
+## Interactions
 
-Discord.Net.Rest DSharpPlus.Http.AspNetCore Clojure ring-discord-auth Dart nyxx_interactions Go tempest Javascript discord-interactions-js discord-slash-commands and its Deno fork slash-create Python discord-interactions-python discord-interactions.py dispike "ask-discord-interactions PHP discord-interactions-php Other caddy-discord-interactions-veri!er 
+Interactions are the new way of making a Discord bot.  
 
+The following **open-source libraries** help with:
+- Security and authentication checks (for webhooks)
+- Types for Interactions data models
 
- BotForge's Application Commands Builder & Previewer Rauf's Slash Command Generator Bsati's Slash Command Builder 
+**C#**
+- Discord.Net.Rest
+- DSharpPlus.Http.AspNetCore  
 
-## OpenAPI Speci!cation 
+**Clojure**
+- ring-discord-auth  
 
-The OpenAPI spec is currently in public preview and **is subject to breaking changes** The public preview of the Discord HTTP API speci!cation provides a standard OpenAPI 3.1 spec for the HTTP API. 
+**Dart**
+- nyxx_interactions  
 
-## Permission Calculators 
+**Go**
+- tempest  
 
-Permissions in Discord are tricky. Luckily, we've got really smart people who love us and have made some great permissions calculators. If you're making a bot for others, and you're not sure how to properly calculate permissions or generate your authorization URL, these are great tools: BotForge's Permissions Calculator FiniteReality's Permissions Calculator 
+**JavaScript**
+- discord-interactions-js  
+- discord-slash-commands (and its Deno fork: `slash-create`)  
 
+**Python**
+- discord-interactions-python  
+- discord-interactions.py  
+- dispike  
+- ask-discord-interactions  
 
- abalabahaha's Permissions Calculator 
+**PHP**
+- discord-interactions-php  
 
-## Intent Calculators 
+**Other**
+- caddy-discord-interactions-verifier  
 
-Gateway Intents are pretty confusing at !rst. If you're not sure what to send in your Identify payload, then these tools may be of help: ziad87's Intent Calculator Larko's Intent Calculator 
+**Tools**
+- BotForge’s Application Commands Builder & Previewer  
+- Rauf’s Slash Command Generator  
+- Bsati’s Slash Command Builder  
 
-## Embed Visualizers 
+---
 
-Webhooks and embeds might seem like black magic. That's because they are, but let us help you demystify them a bit. These tools can help you test how embeds will appear inside of Discord: JohnyTheCarrot's Embed Previewer (Browser Extension) 
+## OpenAPI Specification
 
-## API Types 
+The OpenAPI specification is currently in **public preview** and is **subject to breaking changes**.  
 
+It provides a standard **OpenAPI 3.1 spec** for the Discord HTTP API.
 
-If you're working on a project that interacts with our API, you might !nd an API types module useful as it provides type inspection/completion for the Discord API. **NAME LANGUAGE** dasgo Go discord-api-types JavaScript 
+---
 
-## Game SDK Tools 
+## Permission Calculators
 
-Discord Game SDK's lobby and networking layer shares similarities with other gaming platforms (i.e. Valve's Steamworks SDK). The following open source library provides developers a uniform interface for these shared features and can simplify developing for multiple platforms. Note: this library is tailored for Unity3D development. HouraiNetworking 
+Permissions in Discord can be tricky.  
 
+If you’re making a bot for others and aren’t sure how to calculate permissions or generate your authorization URL, try these tools:  
+- BotForge’s Permissions Calculator  
+- FiniteReality’s Permissions Calculator  
+- abalabahaha’s Permissions Calculator  
 
+---
+
+## Intent Calculators
+
+Gateway Intents can be confusing at first.  
+
+If you’re unsure what to send in your Identify payload, try:  
+- ziad87’s Intent Calculator  
+- Larko’s Intent Calculator  
+
+---
+
+## Embed Visualizers
+
+Embeds and webhooks can feel confusing, but these tools help you preview how they’ll look in Discord:  
+- JohnyTheCarrot’s Embed Previewer (Browser Extension)  
+
+---
+
+## API Types
+
+If you’re working with the Discord API, type modules can help with **type inspection and completion**.
+
+**API Types**
+
+| Name               | Language   |
+|--------------------|------------|
+| dasgo              | Go         |
+| discord-api-types  | JavaScript |
+
+---
+
+## Game SDK Tools
+
+Discord Game SDK’s **lobby and networking layer** is similar to other gaming platforms (like Steamworks SDK).  
+
+The following open-source library provides a **uniform interface** for shared features, simplifying multi-platform development:  
+
+- **HouraiNetworking** (tailored for Unity3D)

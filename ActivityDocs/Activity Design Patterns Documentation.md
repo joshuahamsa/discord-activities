@@ -1,217 +1,244 @@
-**On this page** Guiding Principles Providing a "Solo-Plus" Experience User Presence & Privacy Deliver a Quality Experience Game Design Considerations Co-Watching / Co-Listening Technical Considerations Quality and Testing **QUICK START INTERACTIONS COMPONENTS ACTIVITIES** API Reference Overview of Apps Getting Started Overview Receiving and Responding Application Commands Overview Using Message Components Using Modal Components Component Reference 
+# Activity Design Patterns
+
+## Table of Contents
+- [Guiding Principles](#guiding-principles)
+  - [Interaction over Isolation](#interaction-over-isolation)
+  - [Expression over Monotony](#expression-over-monotony)
+  - [Accessibility over Exclusion](#accessibility-over-exclusion)
+- [Providing a "Solo-Plus" Experience](#providing-a-solo-plus-experience)
+  - [Solo or Single-Player](#solo-or-single-player)
+  - [Solo-Plus or Small Groups](#solo-plus-or-small-groups)
+  - [Large Groups of Users](#large-groups-of-users)
+- [User Presence & Privacy](#user-presence--privacy)
+  - [Make Actions and Presence Visible](#make-actions-and-presence-visible)
+  - [Respect User Privacy](#respect-user-privacy)
+- [Deliver a Quality Experience](#deliver-a-quality-experience)
+  - [Surprise and Delight Users](#surprise-and-delight-users)
+  - [Keep Load Times Low](#keep-load-times-low)
+  - [Support Drop-In, Drop-Out Behavior](#support-drop-in-drop-out-behavior)
+  - [Make Your App Widely Available](#make-your-app-widely-available)
+  - [Cross-Platform Support](#cross-platform-support)
+  - [Discord is a Global Audience](#discord-is-a-global-audience)
+  - [Implement Invites](#implement-invites)
+  - [Implement Sharing](#implement-sharing)
+  - [Activities in Text Channels](#activities-in-text-channels)
+  - [Monetization Considerations](#monetization-considerations)
+- [Game Design Considerations](#game-design-considerations)
+  - [Easy to Learn, Hard to Master](#easy-to-learn-hard-to-master)
+  - [Voice Users are Most Engaged](#voice-users-are-most-engaged)
+  - [Consider Game Tropes](#consider-game-tropes)
+  - [Activity Lifecycle](#activity-lifecycle)
+  - [Track Game Phases](#track-game-phases)
+  - [Games per Session](#games-per-session)
+  - [Group Size Impacts](#group-size-impacts)
+- [Co-Watching / Co-Listening](#co-watching--co-listening)
+- [Technical Considerations](#technical-considerations)
+  - [Developing for the Iframe](#developing-for-the-iframe)
+  - [Developing in Unity](#developing-in-unity)
+- [Quality and Testing](#quality-and-testing)
+  - [Verify UI/UX](#verify-uiux)
+  - [Test for Performance](#test-for-performance)
+  - [Test for Audio](#test-for-audio)
+  - [Validate Activity Controls](#validate-activity-controls)
+  - [Mobile Device UI Considerations](#mobile-device-ui-considerations)
+  - [Desktop Accessibility Guidelines](#desktop-accessibility-guidelines)
+
+---
+
+## Guiding Principles
+
+### Interaction over Isolation
+Activities are not for screen-sharing — Discord already has that built in!  
+Give users ways to interact with one another. User actions should impact the experiences of other participants.
 
-# Activity Design 
+### Expression over Monotony
+Users want to create memorable moments. Build experiences where users can craft moments and react in ways they’ll want to share with others.
 
-# Patterns 
+### Accessibility over Exclusion
+Inclusivity is key. Reduce the bar to entry for your Activity and reward people for engaging deeply with the experience.
 
- Before building your Activity, here are some guiding principles for you to consider for a successful user experience. 
+---
 
-## Guiding Principles 
+## Providing a "Solo-Plus" Experience
 
-### Interaction over Isolation 
+Successful Activities should accommodate small group sessions (**“Plus”**) but also be playable and enjoyable in single-player (**“Solo”**) sessions.
 
- Activities are not for screen-sharing, we already have that built-in! Give users a way to interact with one another. User actions should impact the experiences of other participants. 
+### Solo or Single-Player
+While most people use Discord with friends, consider making your Activity compelling alone, but better together.  
 
-### Expression over Monotony 
+If you don’t support solo play, expect users to peek in alone. Provide ways to preview the Activity so they’ll want to come back with friends.
 
- Search ⌘ K 
+### Solo-Plus or Small Groups
+Small group sessions (3–8 people) show higher engagement and retention.  
+Letting players join with friends keeps them coming back.
 
+### Large Groups of Users
+The real limit is the number of people who can join a voice call (up to 25+).  
+Design your Activity to handle large groups gracefully.
 
-Overview How Activities Work Quickstart Development Guides Local Development User Actions Mobile Layout Networking Multiplayer 
+---
 
-### Expression over Monotony 
+## User Presence & Privacy
 
- Our users want to create memorable moments. Create experiences where users craft moments and react in ways they want to share with others. 
+### Make Actions and Presence Visible
+Users enjoy spaces that feel active. Use server nicknames and avatars where possible. Show when a user is speaking in voice, or whether they’re active/inactive.
 
-### Accessibility over Exclusion 
+### Respect User Privacy
+For sessions that match users from various servers, anonymize usernames and avatars by default.  
 
- Inclusivity is key. Reduce the bar to entry for your Activity and reward people for engaging deeply with your experience. 
+Only display Discord personal identifiers with user confirmation, and only when the viewers already have access to them via the server or DM.
 
-## Providing a "Solo-Plus" 
+---
 
-## Experience 
+## Deliver a Quality Experience
 
- Successful experiences will be built to accommodate small group sessions ("Plus"), but also playable and enjoyable for the case of single-player ("Solo") sessions. 
+### Surprise and Delight Users
+Care about the small details. Deliver the right emotion when least expected to create magic moments.
 
-### Solo or single-player 
+### Keep Load Times Low
+Low load times allow drop-in/drop-out play — especially important for mobile.  
 
- While most people use Discord with small groups of friends. Consider experiences that are compelling alone, but better together! If you don't support solo play, expect to see a lot of users peeking into the Activity on their own. Consider 
+- Partition loading and work with dev tools to reduce load times  
+- Support different screen sizes/orientations across devices  
+- Ensure UI scales properly  
 
+### Support Drop-In, Drop-Out Behavior
+Users may join mid-experience. Give them something to do — even spectating.  
 
- what you can do to preview the Activity and compel them to come back with their friends. 
+Also handle users leaving unexpectedly or going AFK gracefully.  
 
-### Solo-Plus or small groups of users 
+### Make Your App Widely Available
+- Support both desktop and mobile  
+- Consider multiple languages and cultures  
 
- Small group sessions (3-8 people) show more engagement and retention from users than single-player experiences. Letting players join with their friends keeps them coming back for more. 
+#### Cross-Platform Support
+#### Discord is a Global Audience
 
-### Large groups of users 
+### Implement Invites
+The Embedded App SDK allows sending invites to friends. Place invite prompts intentionally, such as when:
+- Players leave a session
+- Minimum participants not reached (e.g., Chess needing 2 players)
 
- While you can set a "max participants" suggestion to users, the only real limit is the number of people who can join a Voice call. Be aware of how your Activity will behave when there are 25 or more people in the call. 
+### Implement Sharing
+Encourage users to share images or GIFs capturing fun/memorable moments.  
 
-## User Presence & Privacy 
+Avoid making things shareable just to advertise the Activity — focus on moments that spark conversation.
 
-When in an Activity with others, make the actions and presence of the others visible to each player. 
+### Activities in Text Channels
+Your UI should not rely on voice chat for explanation. Provide clear instructions through:
+- First-time user experience flows
+- “How To Play” instructions
+- Toast messages
+- Call-to-Action buttons  
 
-### Make actions and presence of the others 
+But avoid overwhelming users with too much copy.
 
+### Monetization Considerations
+Monetization in Activities will be available soon. Keep in mind:
+- Avoid early login/paywalls blocking participation  
+- Avoid “pay to win” advantages  
+- Focus on cosmetic/aesthetic unlocks (skins, themes, avatars, etc.)
 
-### Make actions and presence of the others 
+---
 
-### visible to each player 
+## Game Design Considerations
 
- Users enjoy participating in a space that feels active. If a user has customized their server nickname or avatar, use their server nickname or avatar in game. Show when a user is speaking in the voice call, or whether they're active or inactive. 
+### Easy to Learn, Hard to Master
+Users may feel pressure joining mid-game.  
+Keep controls approachable and intuitive.  
 
-### Respect user privacy 
+Avoid long tutorials — provide simple loops that are easy to grasp quickly.
 
- For Activity sessions that match users from various servers, usernames and avatars should be anonymized by default. Discord personal identi!ers should only be populated into the Activity with user con!rmation. 
+### Voice Users are Most Engaged
+Engagement and retention increase when users are in a voice call with friends.
 
+### Consider Game Tropes
+Leverage familiar genre expectations. Align your design with player interests to encourage retention.
 
- Only use these identi!ers when the people who can see them already have access via the server or DM. 
+### Activity Lifecycle
+Activities close when the last participant leaves.  
+The next launch creates a new instance (even in the same DM/voice channel).
 
-## Deliver a Quality Experience 
+### Track Game Phases
+Track drop-offs:
+- Launch → Start (often the biggest gap, especially without solo play)  
+- Checkpoints within a game  
+- % of sessions that reach game completion  
 
-Make your app fast, easy to join, and maximize fun to launch a crowd favorite. 
+Adjust defaults if certain game modes/settings are underperforming.
 
-### Surprise and delight users 
+### Games per Session
+Not all Activities need multiple games per session, but if you expect repeat plays and don’t see them, investigate why.
 
- Surprise and delight is about caring about the small details of how a person experiences your work. Put the right emotion in when they least expect it to deliver the magic. 
+### Group Size Impacts
+Analyze metrics by group size.  
 
+Examples:
+- Do larger groups finish less often?  
+- Do smaller groups replay more?  
 
-### Keep load times as low as possible 
+Design for robust experiences across different sizes when possible.
 
- This allows for easier drop-in drop-out behavior for the large portion of mobile users on Discord. See the below Quality & Testing Recommendations for key areas of minimum quality support and testing recommendations. See the below Technical Considerations for recommendations on how to partition loading and work with various development tools to reduce load times. Consider different screen sizes and orientations across desktop and mobile devices and make sure UI elements scale appropriately. 
+---
 
-### Support drop-in, drop-out behavior 
+## Co-Watching / Co-Listening
 
+Go beyond simple screen-sharing.  
+- Provide creative interactions that affect all participants  
+- Offer host controls, but let everyone participate (e.g., content suggestions)  
+- Handle geo-restricted content gracefully  
+- Sync playback across users  
 
- Activities are frictionless to join and easy to discover, so you can expect that users will join mid-experience. Give those users something to do, even if it's just letting them spectate until they can join without being disruptive. In the same vein, users can leave without notice or become afk (away from keyboard). Handle these cases gracefully. Create a case for users who have joined a call but have not yet started playing or engaging. Allow these users to "spectate" other users who are playing. This can also be helpful for Activities that have an ideal number in mind for play. 
+Users are familiar with platforms like Spotify, YouTube, Netflix — follow their design patterns.  
 
-### Make your app as available as possible 
+Ensure volume controls work consistently across devices.
 
+---
 
- Supporting desktop and mobile devices will expand your user-base to the widest number of users. Discord device usage is split between mobile and desktop platforms. Consider supporting a multitude of languages and cultures to make your app more useable for all Discord users. The Embedded App SDK allows for sending invites from within an Activity out to other friended users. Add invite buttons to a screen or "ow with intentionality, not only on the start screen and at the beginning. Examples of intentional Invite prompting include: Cases where players leave the activity session Cases where the minimum number of participants has not been reached (e.g. any activity that needs 2+ to start, or is more fun with more people, or when you need an opponent in a game like Chess.) 
+## Technical Considerations
 
-#### Cross-Platform Support 
+### Developing for the Iframe
+Remember the Discord client is running alongside your Activity:
+- Optimize CPU, RAM, and GPU use  
+- Prioritize **time-to-first-interaction**  
+- Minimize WASM to avoid stutters/thermal issues (esp. on iOS)  
 
-#### Discord is a Global Audience 
+All network traffic is routed through the Discord proxy for security.  
 
-#### Implement Invites 
+Create multiple versions of your Activity (Development, Staging, Production) for safe iteration.
 
-#### Implement Sharing 
+### Developing in Unity
+Unity can work, but requires heavy optimization to meet standards.  
+Web-first game engines are generally more performant.
 
+---
 
-Discord is a social platform where users talk to each other. Sharing and invites lets your app live and engage in those shared spaces, making it visible and accessible to everyone not currently playing. Things like sharing and invites are important ways to reach into those private, shared spaces and attract other players. The Embedded App SDK allows for sending an image or gif from within an Activity. Share photos or GIFs that capture moments of fun and memorable, or something to brag about. Don't make things shareable just to feature the activity. Sharing a high score alone may not be very engaging, but sharing a really good move made in a game, or a collaborative drawing that creates a memory is a conversation starter and may make others want to join in on the fun. 
+## Quality and Testing
 
+### Verify UI/UX
+- Ensure all buttons/UI elements function correctly  
+- Handle Discord usernames properly (username vs. server identity)
 
- The Activity user interface, copy and user "ows should not rely on people in voice to explain, organize, clarify, or instruct about how the activity works. All controls, CTAs, and instructions should be clear enough that folks (especially !rst time users) playing in a text channel are able to quickly start using the app without needing to talk on voice to learn about it. Lean on dynamic !rst-time user experience and "How To Play" instructions, toast messages, Call To Action buttons, etc. but be careful to not over-clutter with copy. 
+### Test for Performance
+- Test across phones, tablets, desktops, and OSes  
+- Prevent lag from significantly impacting experience
 
-### Monetization Considerations 
+### Test for Audio
+- Confirm sound effects and music play correctly  
+- Ensure volume controls work as expected
 
-#### Activities in Text Channels 
+### Validate Activity Controls
+- Test all controls (clicks, drags, keys, swipes, hovers)  
+- Verify tutorials and instructions match the Activity on both desktop and mobile
 
+### Mobile Device UI Considerations
+- Avoid placing UI under notches/camera cutouts  
+- Consider curved edges and safe areas  
+- Respect iOS/Android swipe gestures  
+- Prevent Android back button conflicts  
 
-### Monetization Considerations 
-
- Monetization in Activities will be available soon. Keep the following considerations in mind as you design your Activity. Avoid prohibitive gates in front of participation (e.g. login wall / paywall), especially early in the user journey. Avoid monetized unlocks that give unfair advantage to other non-paying players or users (i.e. "pay to win"). Take advantage of Discord as a social platform: look for opportunities to offer users customizable skins, aesthetic themes, new avatars, etc. 
-
-## Game Design Considerations 
-
-### Build games that are easy to learn, hard to 
-
-### master 
-
- Players can often feel pressure when joining a multiplayer game (voice/video) in the moment if they’ve never played before. Games that have a simple quick reference control scheme that are easily approachable help ease players 
-
-
- into an experience without dropping them into the deep end. An easy to understand game loop combined with easy to digest controls tends to work best. If you have to go through a tutorial to understand the game then it will be intimidating to join a game in the moment. 
-
-### Discord users who engage with voice are 
-
-### among our most engaged users 
-
- Activity engagement and retention increases when users are in a voice call with friends. 
-
-### Consider existing game expectations and 
-
-### tropes 
-
- If you're developing a game, you're more likely to attract users who are gamers. Take advantage of existing tropes and expectations for games of the genre you're developing. Appeal to the player interests that your game (or game genre) provides, and support those interests as a means to get them coming back. 
-
-### Activities close when the last participant in 
-
-### the Activity leaves it 
-
-
- The next time the Activity is launched, even if it’s in the same DM or Voice Channel, it will be a different instance and could have different participants. 
-
-### If a game is launched, what % of the time do 
-
-### users reach different phases of the game? 
-
- This includes launch → start, as there can be a large dropoff between these two (especially if you don’t support solo play or small group sizes). This also includes various check points in the game, including what % of sessions that start a game reach the end of that game! If your Activity has different settings you can start a game with, see if some are more popular or more successful — you may want to change your defaults! For non-games, you may want to analyze a certain action instead (such as queueing a video / song for a co-watching / co-listening Activity). If drop-off is really high at a certain point, see if you can !gure out why or change "ows. 
-
-### How many games are played in a session? 
-
- More games per session isn’t inherently better (you may have an Activity that is meant to be one long game), but is a good baseline to understand. 
-
-
- If you expect to see a lot of repeat plays per session and don’t, it can be worth digging in to understand more. 
-
-### How does the group size impact various key 
-
-### metrics? 
-
- For example, are larger sessions more or less likely to reach the end of a game? To replay? Etc. This can help you catch if your Activity has unexpected weak points in different group sizes — maybe the game drags on if there are too many people or isn’t compelling enough if there’s only two. Not every Activity needs to be built for robust group sizes, but if you have the option to play with X # of players, it’s good practice to make sure that experience is enjoyable for all involved! 
-
-## Co-Watching / Co-Listening 
-
- Co-watching and co-listening should be more than just screen-sharing. Consider creative ways to to make each user's experience impacted by other participants. Consider providing host-controls so that playback 
-
-
- isn't overly chaotic. If host controls are provided, make sure everyone can participate in some way, even if it's just recommending content to the host. If content is not available for everyone in the activity (for example, geo-restricted content), make sure that information is known when the content is queued and when it's playing. The host is generally interested in creating a good experience for their friends. Playback of content should be in sync with others in a local channel or call. Familiar design patterns can help to get people to participate in your Activity right away. Most Discord users are extremely familiar with media browsing (Spotify, YouTube, Net"ix, etc.) and will immediately understand your content if you follow these patterns. Mobile device volume can be controlled by a device's built-in controls (volume buttons on the side of the device) and work as expected across desktop, mobile, and browsers. 
-
-## Technical Considerations 
-
-### Developing for the iframe 
-
-
- Remember that you need to contend with the Discord Client itself for resources (CPU, RAM and GPU) as that client is still fully running while executing your Activity. Prioritize time-to-!rst-interaction. Minimize the amount of Web Assembly (WASM) as much as possible in your Activity. Older iOS devices are especially affected by WebKit's optimization compilation pass of WASM that occurs during the !rst few minutes of usage of an Activity. To varying degrees, this will cause noticeable stutters, device thermal issues, and possibly degraded Discord's AV quality during those early minutes. All network traf!c is routed through the Discord Proxy for various security reasons. Create multiple versions of your Activity in the Developer Portal for less and more stable development versioning (e.g. Development, Staging, Production). This allows you to show and test the last stable build while also having development and staging environments. 
-
-### Developing in Unity 
-
-Developing for the iframe in Unity is possible, but will likely require extensive min/maxing of all facets of your game to meet performance and quality standards. Other, web-!rst, 
-
-
-game engines are generally more performant out of the box. 
-
-## Quality and Testing 
-
-### Verify User Interface and User Experience 
-
- Ensure all buttons and UI elements function correctly without any blocking issues for standard Activity use or gameplay. Test Discord usernames handling, ensuring they display appropriately based on the chosen format (Discord username or server identity). 
-
-### Test for Performance 
-
- Evaluate performance to ensure it is satisfactory for the majority of users across phones, tablets, and desktop machines and across multiple operating systems. Lag or slowness should not signi!cantly impact the Activity or gameplay experience. 
-
-### Test for Audio 
-
-
- Check that sound effects and background music work as intended, with volume settings functioning correctly. Being able to hear when playing on a voice call is important. 
-
-### Validate Activity Controls 
-
- Con!rm that all game controls, including clicks, drag, key controls, swiping, and hovers, work as expected and are suitable for the platform. Test in-app tutorials and instructions for accuracy and relevance to the current activity functionality and user platform (desktop or mobile). 
-
-### Mobile Device UI Considerations 
-
- Watch out for potential issues on devices with top notches or cameras in speci!c corners that may hide or cut off UI elements and buttons, rendering them untappable. Be mindful of Android curved screen edges that could obscure or make elements and buttons inaccessible. Take into account iOS/Android swipe gestures that may interfere with UI elements or buttons located at the bottom of the screen. Ensure that Android devices with a back button do not overlap with elements or buttons at the bottom of 
-
-
- the screen, preventing users from tapping them. Respect the safe area de!ned by the platform to prevent any buttons or content from being cut off or non-functional. 
-
-### Desktop Accessibility Guidelines 
-
- Enable users to cycle through Discord buttons and !elds on desktop by pressing TAB repeatedly, ensuring that the activity does not capture control. Implement the functionality for the ESC key to close any open in-activity modals, providing a consistent user experience. Opt for color-blind friendly colors with high contrast, especially for crucial game elements that need to be distinguishable based on color. Avoid using similar colors for objects that are essential for gameplay but differ only in color, as this may pose challenges for color-blind users. 
-
-
+### Desktop Accessibility Guidelines
+- Support TAB navigation between Discord fields/buttons  
+- Allow ESC to close in-Activity modals  
+- Use high-contrast, color-blind-friendly colors  
+- Avoid relying solely on color for gameplay-critical elements
